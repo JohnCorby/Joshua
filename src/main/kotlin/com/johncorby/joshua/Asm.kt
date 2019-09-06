@@ -51,7 +51,7 @@ object AsmString {
     operator fun get(pos: Int) = lines[pos]
     operator fun set(pos: Int, line: String) = lines.set(pos, line)
 
-    override fun toString() = lines.joinToString { "$it\n" }
+    override fun toString() = lines.joinToString("\n")
 }
 
 fun String.toPos() = AsmString.labels[this]!!

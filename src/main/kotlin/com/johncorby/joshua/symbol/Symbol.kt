@@ -39,10 +39,7 @@ open class Symbol(val name: String) : Closeable {
     }
 
     override fun hashCode() = name.hashCode()
-    /**
-     * for debugging
-     */
-    override fun toString() = "${this::class}(name=$name)"
+    override fun toString() = "${this::class.simpleName}(name=$name)"
 }
 
 /**

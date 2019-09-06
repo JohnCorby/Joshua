@@ -4,7 +4,7 @@ import com.johncorby.joshua.antlr.GrammarParser
 import com.johncorby.joshua.symbol.*
 import org.antlr.v4.runtime.CharStreams
 
-fun parse() = parse<Ast.Program>(CharStreams.fromFileName(IN_PATH), GrammarParser::program)
+fun parse() = parse<Ast.Program>(CharStreams.fromFileName(IN_PATH), GrammarParser::program).eval()
 
 /**
  * defines higher level ast
@@ -42,7 +42,7 @@ sealed class Ast {
         ) : Statement() {
             override fun eval() {
                 if (block != null)
-                    InternFunc(type.toType(), name, args, block as List<Statement>)
+                    InternFunc(type.toType(), name, args, block as List<Statement>).use { } // todo lmao jank
                 else
                     ExternFunc(type.toType(), name, args)
             }
