@@ -42,7 +42,7 @@ sealed class Ast {
         ) : Statement() {
             override fun eval() {
                 if (block != null)
-                    InternFunc(type.toType(), name, args, block as List<Statement>).use { } // todo lmao jank
+                    InternFunc(type.toType(), name, args, block as List<Statement>)
                 else
                     ExternFunc(type.toType(), name, args)
             }

@@ -36,6 +36,10 @@ class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclar
         current = this
         AsmString.add("global ${resolve()}")
         AsmString.add("${resolve()}: enter 0, 0", label = toString())
+
+        block.forEach(Ast.Statement::eval)
+
+        close()
     }
 
     override fun close() {
