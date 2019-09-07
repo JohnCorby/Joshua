@@ -30,6 +30,7 @@ expr: '(' expr ')' #parenExpr
     | FLOAT_LITERAL #floatExpr
     | CHAR_LITERAL #charExpr
     | STR_LITERAL #strExpr
+    | 'asm' code=STR_LITERAL #asmExpr
     ;
 
 

@@ -1,6 +1,9 @@
 package com.johncorby.joshua.symbol
 
-class Symbols : ArrayList<Symbol>() {
+/**
+ * todo fix no duplicates problem without so much manual labor (global and local vars of same name)
+ */
+class Symbols : HashSet<Symbol>() {
     inline fun <reified T : Symbol> get() = filterIsInstance<T>()
 
     inline operator fun <reified T : Symbol> get(name: String) = get<T>().find { it.name == name }

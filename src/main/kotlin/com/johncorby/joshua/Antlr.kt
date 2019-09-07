@@ -35,7 +35,8 @@ object Visitor : GrammarBaseVisitor<Ast>() {
         ctx.retType.text,
         ctx.name.text,
         ctx.funcArg().map { visit(it) as Ast.Statement.VarDeclare },
-        ctx.block()?.statement()?.map { visit(it) as Ast.Statement })
+        ctx.block()?.statement()?.map { visit(it) as Ast.Statement }
+    )
 
     override fun visitFuncArg(ctx: GrammarParser.FuncArgContext) =
         Ast.Statement.VarDeclare(ctx.argType.text, ctx.name.text, null)
@@ -44,19 +45,19 @@ object Visitor : GrammarBaseVisitor<Ast>() {
         Ast.Statement.FuncCall(ctx.name.text, ctx.args.expr().map { visit(it) as Ast.Expr })
 
     override fun visitVarDeclare(ctx: GrammarParser.VarDeclareContext) =
-        Ast.Statement.VarDeclare(ctx.varType.text, ctx.name.text, visit(ctx.`val`) as Ast.Expr)
+        Ast.Statement.VarDeclare(ctx.varType.text, ctx.name.text, ctx.`val`?.let { visit(it) as Ast.Expr })
 
     override fun visitVarAssign(ctx: GrammarParser.VarAssignContext) =
         Ast.Statement.VarAssign(ctx.name.text, visit(ctx.`val`) as Ast.Expr)
 
-    override fun visitAsm(ctx: GrammarParser.AsmContext) =
-        Ast.Statement.Asm(ctx
+    override fun visitAsm(ctx: GrammarParser.AsmContext) = Ast.Statement.Asm(
+        ctx
             .code
             .text
             .drop(1)
             .dropLast(1)
             .trimIndent()
-        )
+    )
 
     override fun visitParenExpr(ctx: GrammarParser.ParenExprContext) = visit(ctx.expr()) as Ast.Expr
 
