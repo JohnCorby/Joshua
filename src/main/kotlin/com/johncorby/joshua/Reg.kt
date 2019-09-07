@@ -63,7 +63,7 @@ enum class Reg(preserved: Boolean) {
             }
             "*" -> {
                 AsmFile.add("imul $left, $right")
-                right.free
+                right.free = true
                 left
             }
             else -> throw CompilerError("op $op defined but not implemented")

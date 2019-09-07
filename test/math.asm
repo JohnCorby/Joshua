@@ -6,28 +6,28 @@ enter 0, 0
 mov eax, 1
 mov edx, 1
 imul eax, edx
+mov edx, 1
+mov ecx, 1
+imul edx, ecx
+add eax, edx
+mov edx, 1
+mov ecx, 1
+imul edx, ecx
 mov ecx, 1
 mov ebx, 1
 imul ecx, ebx
-add eax, ecx
+mov ebx, 1
+add ecx, ebx
+mov ebx, 1
+imul ecx, ebx
+add edx, ecx
+add eax, edx
+mov edx, 1
 mov ecx, 1
-mov esi, 1
-imul ecx, esi
-mov edi, 1
-mov ebp, 1
-imul edi, ebp
-mov esp, 1
-add edi, esp
-mov esp, 1
-imul edi, esp
-add ecx, edi
-add eax, ecx
-mov ecx, 1
-mov edi, 1
-imul ecx, edi
-add eax, ecx
-mov ecx, 1
-add eax, ecx
+imul edx, ecx
+add eax, edx
+mov edx, 1
+add eax, edx
 mov dword [ebp - 4], eax
 push dword [ebp - 4]
 push format
