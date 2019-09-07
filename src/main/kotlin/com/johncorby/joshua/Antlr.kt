@@ -25,6 +25,7 @@ fun <T : Ast> parse(input: CharStream, ctx: (GrammarParser) -> ParserRuleContext
  * used to convert [ParserRuleContext] to [Ast]
  */
 object Visitor : GrammarBaseVisitor<Ast>() {
+    // todo for some reason this isnt catching errors??????
     override fun visitErrorNode(node: ErrorNode) = throw ProgramError("parsing failed")
 
     override fun visitProgram(ctx: GrammarParser.ProgramContext) =

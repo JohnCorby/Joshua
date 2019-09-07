@@ -1,13 +1,9 @@
 package com.johncorby.joshua.symbol
 
-import com.johncorby.joshua.CompilerError
-
 class Symbols : ArrayList<Symbol>() {
-    inline fun <reified T : Symbol> get() =
-        filterIsInstance<T>().ifEmpty { throw CompilerError("no symbols of class ${T::class}") }
+    inline fun <reified T : Symbol> get() = filterIsInstance<T>()
 
-    inline operator fun <reified T : Symbol> get(name: String) =
-        get<T>().find { it.name == name } ?: throw CompilerError("no symbols of class ${T::class} and name $name")
+    inline operator fun <reified T : Symbol> get(name: String) = get<T>().find { it.name == name }
 }
 
 val symbols: Symbols = Symbols()
@@ -17,7 +13,6 @@ val symbols: Symbols = Symbols()
  */
 open class Symbol(val name: String) {
     init {
-        println(this)
         symbols.add(this)
     }
 

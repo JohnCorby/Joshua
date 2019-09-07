@@ -1,10 +1,12 @@
 package com.johncorby.joshua
 
-import com.johncorby.joshua.antlr.GrammarParser
 import com.johncorby.joshua.symbol.*
 import org.antlr.v4.runtime.CharStreams
 
-fun parse() = parse<Ast.Program>(CharStreams.fromFileName(IN_PATH), GrammarParser::program).eval()
+fun parse() = with(parse<Ast.Program>(CharStreams.fromFileName(IN_PATH)) { it.program() }) {
+    println(this)
+    eval()
+}
 
 /**
  * defines higher level ast
@@ -14,7 +16,7 @@ sealed class Ast {
     abstract fun eval(): Any
 
     data class Program(val statements: List<Statement>) : Ast() {
-        override fun eval() = statements.forEach(Statement::eval)
+        override fun eval() = statements.forEach { it.eval() }
     }
 
     sealed class Statement : Ast() {
@@ -30,7 +32,7 @@ sealed class Ast {
         }
 
         data class VarAssign(val name: String, val value: Expr) : Statement() {
-            override fun eval() = symbols.get<Var>(name).assign(value.eval())
+            override fun eval() = symbols.get<Var>(name)!!.assign(value.eval())
         }
 
         data class FuncDeclare(
@@ -49,7 +51,7 @@ sealed class Ast {
 
         data class FuncCall(val name: String, val args: List<Expr>) : Statement() {
             override fun eval() {
-                symbols.get<Func>(name).call(args.map(Expr::eval))
+                symbols.get<Func>(name)!!.call(args.map { it.eval() })
             }
         }
 
@@ -67,11 +69,11 @@ sealed class Ast {
         }
 
         data class Func(val name: kotlin.String, val args: List<Expr>) : Expr() {
-            override fun eval() = symbols.get<com.johncorby.joshua.symbol.Func>(name).call(args.map(Expr::eval))
+            override fun eval() = symbols.get<com.johncorby.joshua.symbol.Func>(name)!!.call(args.map { it.eval() })
         }
 
         data class Var(val name: kotlin.String) : Expr() {
-            override fun eval() = Reg.load(symbols.get<com.johncorby.joshua.symbol.Var>(name).resolve())
+            override fun eval() = Reg.load(symbols.get<com.johncorby.joshua.symbol.Var>(name)!!.resolve())
         }
 
         data class Int(val value: kotlin.Int) : Expr() {

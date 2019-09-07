@@ -26,7 +26,12 @@ sealed class Func(val retType: Type, name: String, val args: List<Ast.Statement.
 /**
  * [Func] defined in program
  */
-class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclare>, block: List<Ast.Statement>) :
+class InternFunc(
+    retType: Type,
+    name: String,
+    args: List<Ast.Statement.VarDeclare>,
+    block: List<Ast.Statement>
+) :
     Func(retType, name, args) {
     companion object {
         var current: InternFunc? = null
@@ -41,13 +46,16 @@ class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclar
         )
         AsmFile.add(AsmFile.Marker.BEGIN(this))
 
-        args.forEach(Ast.Statement.VarDeclare::eval)
-        block.forEach(Ast.Statement::eval)
+        args.forEach { it.eval() }
+        block.forEach { it.eval() }
 
         undefine()
     }
 
     override fun undefine() {
+        symbols.get<ParamVar>().forEach { it.undefine() }
+        symbols.get<FrameVar>().forEach { it.undefine() }
+
         AsmFile.add(AsmFile.Marker.END(this))
         AsmFile.add(
             "leave",

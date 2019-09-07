@@ -7,7 +7,7 @@ dword main() {
     asm "
         push {a}
         push format
-        call printf
+        call {printf}
         add esp, 12
 
         mov eax, 0

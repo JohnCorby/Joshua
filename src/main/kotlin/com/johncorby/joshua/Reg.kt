@@ -26,25 +26,25 @@ enum class Reg(preserved: Boolean) {
 
     var free = true
         set(value) {
-            assert(field != value, "old free and new free are the same ($field)")
+            if (field == value) throw CompilerError("old/new value of free are the same ($field)")
             field = value
         }
 
     @RegFunc
     fun store(to: String) {
-        AsmFile.add("mov $to, $this ; $to = $this")
+        AsmFile.add("mov $to, $this")
         free = true
     }
 
     override fun toString() = super.toString().toLowerCase()
 
     companion object {
-        private fun findFree() = values().firstOrNull(Reg::free) ?: throw CompilerError("ran out of free regs")
+        private fun findFree() = values().find { it.free } ?: throw CompilerError("ran out of free regs")
 
         @RegFunc
         fun load(from: String): Reg {
             val to = findFree()
-            AsmFile.add("mov $to, $from ; $to = $from")
+            AsmFile.add("mov $to, $from")
             to.free = false
             return to
         }
@@ -52,17 +52,17 @@ enum class Reg(preserved: Boolean) {
         @RegFunc
         fun binaryOp(left: Reg, right: Reg, op: String) = when (op) {
             "+" -> {
-                AsmFile.add("add $left, $right ; $left += $right")
+                AsmFile.add("add $left, $right")
                 right.free = true
                 left
             }
             "-" -> {
-                AsmFile.add("sub $left, $right ; $left += $right")
+                AsmFile.add("sub $left, $right")
                 right.free = true
                 left
             }
             "*" -> {
-                AsmFile.add("imul $left, $right ; $left += $right")
+                AsmFile.add("imul $left, $right")
                 right.free
                 left
             }
