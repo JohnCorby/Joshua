@@ -32,7 +32,7 @@ enum class Reg(preserved: Boolean) {
 
     @RegFunc
     fun store(to: String) {
-        AsmFile.add("mov $to, $this")
+        AsmFile.label("mov $to, $this")
         free = true
     }
 
@@ -44,7 +44,7 @@ enum class Reg(preserved: Boolean) {
         @RegFunc
         fun load(from: String): Reg {
             val to = findFree()
-            AsmFile.add("mov $to, $from")
+            AsmFile.label("mov $to, $from")
             to.free = false
             return to
         }
@@ -52,17 +52,17 @@ enum class Reg(preserved: Boolean) {
         @RegFunc
         fun binaryOp(left: Reg, right: Reg, op: String) = when (op) {
             "+" -> {
-                AsmFile.add("add $left, $right")
+                AsmFile.label("add $left, $right")
                 right.free = true
                 left
             }
             "-" -> {
-                AsmFile.add("sub $left, $right")
+                AsmFile.label("sub $left, $right")
                 right.free = true
                 left
             }
             "*" -> {
-                AsmFile.add("imul $left, $right")
+                AsmFile.label("imul $left, $right")
                 right.free = true
                 left
             }
@@ -76,4 +76,5 @@ enum class Reg(preserved: Boolean) {
  */
 @Retention(AnnotationRetention.SOURCE)
 @Target(AnnotationTarget.FUNCTION)
+@MustBeDocumented
 annotation class RegFunc

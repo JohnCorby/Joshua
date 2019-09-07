@@ -54,10 +54,13 @@ sealed class Ast {
 
         data class Asm(val code: String) : Statement() {
             override fun eval() =
-                AsmFile.add(code.replace("""\{(.+?)}""".toRegex()) { (symbols.get<Symbol>(it.groupValues[1]) as Resolvable).resolve() })
+                AsmFile.label(code.replace("""\{(.+?)}""".toRegex()) { (symbols.get<Symbol>(it.groupValues[1]) as Resolvable).resolve() })
         }
     }
 
+    /**
+     * todo this whole system needs to be changed so that it can support not only regs, but also different literals (which change depending on if it's globally initialized or not)
+     */
     sealed class Expr : Ast() {
         abstract override fun eval(): Reg
 

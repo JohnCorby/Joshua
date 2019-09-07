@@ -9,7 +9,7 @@ lateinit var IN_PATH: String
 fun main(args: Array<String>) {
     IN_PATH = args[0]
 
-    initAsm()
+    AsmFile.init()
     parse()
-    makeAsm()
+    AsmFile.make()
 }

@@ -1,5 +1,6 @@
 package com.johncorby.joshua.symbol
 
+import com.johncorby.joshua.AsmFile
 import com.johncorby.joshua.Reg
 import com.johncorby.joshua.RegFunc
 import com.johncorby.joshua.Type
@@ -8,33 +9,27 @@ import kotlin.math.abs
 /**
  * [Symbol] that refers to assignable memory address
  */
-sealed class Var(val type: Type, name: String, value: Reg?) : Symbol(name), Resolvable {
-    private val memBase: String = initMemBase()
-    private val memOfs: Int = initMemOfs()
+sealed class Var(val type: Type, name: String) : Symbol(name), Resolvable {
+    private val memOfs = initMemOfs()
 
-    init {
-        if (value != null) init(value)
-    }
-
-    abstract fun initMemBase(): String
+    abstract fun getMemBase(): String
     abstract fun initMemOfs(): Int
 
     @RegFunc
-    abstract fun init(value: Reg)
+    open fun assign(value: Reg) = value.store(resolve())
 
-    @RegFunc
-    fun assign(value: Reg) = value.store(resolve())
-
-    override fun resolve() = "${type.sizeOperand} [$memBase ${if (memOfs < 0) "-" else "+"} ${abs(memOfs)}]"
+    override fun resolve() = "${type.sizeOperand} [${getMemBase()} ${if (memOfs < 0) "-" else "+"} ${abs(memOfs)}]"
 }
 
 /**
  * [Var] of a [Func]
  */
-sealed class LocalVar(type: Type, name: String, value: Reg?) : Var(type, name, value) {
-    override fun initMemBase() = "ebp"
+sealed class LocalVar(type: Type, name: String, value: Reg?) : Var(type, name) {
+    override fun getMemBase() = "ebp"
 
-    override fun init(value: Reg) = assign(value)
+    init {
+        value?.let { assign(it) }
+    }
 }
 
 /**
@@ -54,11 +49,12 @@ class FrameVar(type: Type, name: String, value: Reg?) : LocalVar(type, name, val
 /**
  * [Var] stored globally
  */
-class GlobalVar(type: Type, name: String, value: Reg?) : Var(type, name, value) {
-    override fun initMemBase() = "globals"
+class GlobalVar(type: Type, name: String, value: Reg?) : Var(type, name) {
+    override fun getMemBase() = "globals"
     override fun initMemOfs() = symbols.get<GlobalVar>().map { it.type.size }.sum()
 
-    override fun init(value: Reg) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    init {
+        AsmFile.seek(AsmFile[AsmFile.Labels.lastGlobal])
+        AsmFile.append("")
     }
 }
