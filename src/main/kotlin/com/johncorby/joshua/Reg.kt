@@ -9,6 +9,8 @@ package com.johncorby.joshua
  * preserved: ebx, esi, edi, ebp, esp
  *
  * todo use preserved and push and stuff
+ * todo preserved regs start off used because they might store important values (see above)
+ *
  * todo other operations
  * todo at some point, this system will need to be redesigned to work with other types besides just unsigned dwords
  */
@@ -22,8 +24,7 @@ enum class Reg(preserved: Boolean) {
     EBP(true),
     ESP(true);
 
-    // preserved regs start off used because they might store important values
-    var free = !preserved
+    var free = true
         set(value) {
             assert(field != value, "old free and new free are the same ($field)")
             field = value
@@ -31,17 +32,19 @@ enum class Reg(preserved: Boolean) {
 
     @RegFunc
     fun store(to: String) {
-        AsmString.add("mov $to, $this")
+        AsmFile.add("mov $to, $this ; $to = $this")
         free = true
     }
 
+    override fun toString() = super.toString().toLowerCase()
+
     companion object {
-        private fun findFree() = values().firstOrNull(Reg::free) ?: throw CompileError("ran out of free regs")
+        private fun findFree() = values().firstOrNull(Reg::free) ?: throw CompilerError("ran out of free regs")
 
         @RegFunc
         fun load(from: String): Reg {
             val to = findFree()
-            AsmString.add("mov $to, $from")
+            AsmFile.add("mov $to, $from ; $to = $from")
             to.free = false
             return to
         }
@@ -49,21 +52,21 @@ enum class Reg(preserved: Boolean) {
         @RegFunc
         fun binaryOp(left: Reg, right: Reg, op: String) = when (op) {
             "+" -> {
-                AsmString.add("add $left, $right")
+                AsmFile.add("add $left, $right ; $left += $right")
                 right.free = true
                 left
             }
             "-" -> {
-                AsmString.add("sub $left, $right")
+                AsmFile.add("sub $left, $right ; $left += $right")
                 right.free = true
                 left
             }
             "*" -> {
-                AsmString.add("imul $left, $right")
+                AsmFile.add("imul $left, $right ; $left += $right")
                 right.free
                 left
             }
-            else -> throw CompileError("op $op defined but not implemented")
+            else -> throw CompilerError("op $op defined but not implemented")
         }
     }
 }

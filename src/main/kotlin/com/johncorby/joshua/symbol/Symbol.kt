@@ -1,29 +1,27 @@
 package com.johncorby.joshua.symbol
 
-import java.io.Closeable
-import kotlin.reflect.KClass
+import com.johncorby.joshua.CompilerError
 
-class SymbolMap : HashMap<Pair<KClass<out Symbol>, String>, Symbol>() {
-    inline fun <reified T : Symbol> get(name: String) = get(Pair(T::class, name)) as T
-    inline fun <reified T : Symbol> get() = filterKeys { it.first is T }.map { it.value as T }
+class Symbols : ArrayList<Symbol>() {
+    inline fun <reified T : Symbol> get() =
+        filterIsInstance<T>().ifEmpty { throw CompilerError("no symbols of class ${T::class}") }
 
-    fun add(symbol: Symbol) = set(symbol.getMapKey(), symbol)
-    fun remove(symbol: Symbol) = remove(symbol.getMapKey())
+    inline operator fun <reified T : Symbol> get(name: String) =
+        get<T>().find { it.name == name } ?: throw CompilerError("no symbols of class ${T::class} and name $name")
 }
 
-val symbols: SymbolMap = SymbolMap()
-fun Symbol.getMapKey() = Pair(this::class, name)
+val symbols: Symbols = Symbols()
 
 /**
  * high-level programming element
  */
-open class Symbol(val name: String) : Closeable {
+open class Symbol(val name: String) {
     init {
         println(this)
         symbols.add(this)
     }
 
-    override fun close() {
+    open fun undefine() {
         symbols.remove(this)
     }
 
@@ -39,7 +37,7 @@ open class Symbol(val name: String) : Closeable {
     }
 
     override fun hashCode() = name.hashCode()
-    override fun toString() = "${this::class.simpleName}(name=$name)"
+    override fun toString() = "${this::class.simpleName}($name)"
 }
 
 /**

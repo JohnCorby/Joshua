@@ -22,8 +22,8 @@ fun doCmd(vararg args: String) = ProcessBuilder(*args).inheritIO().start().waitF
 fun changeExt(file: String, ext: String) = file.substring(0, file.lastIndexOf('.')) + ext
 
 /**
- * assert but raise [CompileError] instead of [AssertionError]
+ * assert but raise [ProgramError] instead of [AssertionError]
  */
 fun assert(condition: Boolean, falseMsg: String) {
-    if (!condition) throw CompileError(falseMsg)
+    if (!condition) throw ProgramError(falseMsg)
 }

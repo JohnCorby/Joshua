@@ -11,11 +11,11 @@ sealed class Func(val retType: Type, name: String, val args: List<Ast.Statement.
     fun call(args: List<Reg>): Reg {
         // todo push args in better way using esp offsets
 //        AsmString.add("sub esp, ${args.size * 4}")
-        args.forEach { AsmString.add("push $it") }
+        args.forEach { AsmFile.add("push $it") }
 
-        AsmString.add("call ${resolve()}")
+        AsmFile.add("call ${resolve()}")
 
-        AsmString.add("add esp, ${args.size * 4}")
+        AsmFile.add("add esp, ${args.size * 4}")
 
         return Reg.EAX
     }
@@ -26,7 +26,7 @@ sealed class Func(val retType: Type, name: String, val args: List<Ast.Statement.
 /**
  * [Func] defined in program
  */
-class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclare>, val block: List<Ast.Statement>) :
+class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclare>, block: List<Ast.Statement>) :
     Func(retType, name, args) {
     companion object {
         var current: InternFunc? = null
@@ -34,22 +34,35 @@ class InternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclar
 
     init {
         current = this
-        AsmString.add("global ${resolve()}")
-        AsmString.add("${resolve()}: enter 0, 0", label = toString())
+        AsmFile.add(
+            "global ${resolve()}",
+            "${resolve()}:",
+            "enter 0, 0"
+        )
+        AsmFile.add(AsmFile.Marker.BEGIN(this))
 
+        args.forEach(Ast.Statement.VarDeclare::eval)
         block.forEach(Ast.Statement::eval)
 
-        close()
+        undefine()
     }
 
-    override fun close() {
-        AsmString.add("leave")
-        AsmString.add("ret")
+    override fun undefine() {
+        AsmFile.add(AsmFile.Marker.END(this))
+        AsmFile.add(
+            "leave",
+            "ret"
+        )
         current = null
+        super.undefine()
     }
 }
 
 /**
  * [Func] defined outside program
  */
-class ExternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclare>) : Func(retType, name, args)
+class ExternFunc(retType: Type, name: String, args: List<Ast.Statement.VarDeclare>) : Func(retType, name, args) {
+    init {
+        AsmFile.add("extern ${resolve()}")
+    }
+}

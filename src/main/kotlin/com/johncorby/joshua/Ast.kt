@@ -26,7 +26,6 @@ sealed class Ast {
                     GlobalVar(type.toType(), name, value?.eval())
                 else
                     FrameVar(type.toType(), name, value?.eval())
-                // todo param vars
             }
         }
 
@@ -56,7 +55,7 @@ sealed class Ast {
 
         data class Asm(val code: String) : Statement() {
             override fun eval() =
-                AsmString.add(code.replace("""\{(.+?)}""".toRegex()) { (symbols.get<Symbol>(it.groupValues[1]) as Resolvable).resolve() })
+                AsmFile.add(code.replace("""\{(.+?)}""".toRegex()) { (symbols.get<Symbol>(it.groupValues[1]) as Resolvable).resolve() })
         }
     }
 

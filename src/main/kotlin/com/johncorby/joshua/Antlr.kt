@@ -25,7 +25,7 @@ fun <T : Ast> parse(input: CharStream, ctx: (GrammarParser) -> ParserRuleContext
  * used to convert [ParserRuleContext] to [Ast]
  */
 object Visitor : GrammarBaseVisitor<Ast>() {
-    override fun visitErrorNode(node: ErrorNode) = throw CompileError("parsing failed")
+    override fun visitErrorNode(node: ErrorNode) = throw ProgramError("parsing failed")
 
     override fun visitProgram(ctx: GrammarParser.ProgramContext) =
         Ast.Program(ctx.statement().map { visit(it) as Ast.Statement })

@@ -13,7 +13,7 @@ enum class Type(val size: Int) {
             1 -> "byte"
             2 -> "word"
             4 -> "dword"
-            else -> throw CompileError("unknown size operand $size for $this")
+            else -> throw CompilerError("unknown size operand $size for $this")
         }
 }
 
