@@ -7,18 +7,13 @@ asm "
 ";
 
 dword main() {
-    dword format;
-    dword msg;
     asm "
-        mov {format}, format
-        mov {msg}, msg
-
-        push {msg}
-        push {format}
+        push msg
+        push format
         call printf
         add esp, 8
 
-        push {msg}
+        push msg
         call puts
         add esp, 4
     ";

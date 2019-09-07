@@ -3,10 +3,7 @@ package com.johncorby.joshua
 import com.johncorby.joshua.symbol.*
 import org.antlr.v4.runtime.CharStreams
 
-fun parse() = with(parse<Ast.Program>(CharStreams.fromFileName(IN_PATH)) { it.program() }) {
-    println(this)
-    eval()
-}
+fun parse() = parse<Ast.Program>(CharStreams.fromFileName(IN_PATH)) { it.program() }.eval()
 
 /**
  * defines higher level ast
