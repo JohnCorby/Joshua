@@ -7,6 +7,6 @@ fun main(args: Array<String>) {
     IN_PATH = args[0]
 
     OutFile
-    parse()
+    eval()
     OutFile.finish()
 }

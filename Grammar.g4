@@ -2,12 +2,14 @@ grammar Grammar;
 
 program: statements+=statement* EOF;
 
-statement: funcDeclare
+statement: cCode
+         | funcDeclare
          | funcCall
          | varDeclare
          | varAssign
-         | cCode
          ;
+
+cCode: 'c' code=STR_LITERAL;
 
 funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
 block: '{' statements+=statement* '}';
@@ -16,8 +18,6 @@ funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 
 varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
 varAssign: name=IDENT '=' value=expr;
-
-cCode: 'c' code=STR_LITERAL;
 
 expr: '(' expr ')' #parenExpr
     | left=expr op=('*'|'/'|'%') right=expr #binExpr

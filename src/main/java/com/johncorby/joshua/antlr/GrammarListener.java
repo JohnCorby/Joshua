@@ -28,6 +28,16 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitStatement(GrammarParser.StatementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link GrammarParser#cCode}.
+	 * @param ctx the parse tree
+	 */
+	void enterCCode(GrammarParser.CCodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#cCode}.
+	 * @param ctx the parse tree
+	 */
+	void exitCCode(GrammarParser.CCodeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link GrammarParser#funcDeclare}.
 	 * @param ctx the parse tree
 	 */
@@ -77,16 +87,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarAssign(GrammarParser.VarAssignContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link GrammarParser#cCode}.
-	 * @param ctx the parse tree
-	 */
-	void enterCCode(GrammarParser.CCodeContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GrammarParser#cCode}.
-	 * @param ctx the parse tree
-	 */
-	void exitCCode(GrammarParser.CCodeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code strExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

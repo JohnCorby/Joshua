@@ -8,17 +8,9 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
-import java.io.File
 
 /**
- * simply parse the file at [IN_PATH]
- */
-fun parse() {
-    parse<Program>(File(IN_PATH).readText()) { it.program() }
-}
-
-/**
- * converts [code] to [T] using the appropriate context gotten from [contextGetter]
+ * converts [code] to [Ast] using the appropriate context gotten from [contextGetter]
  */
 fun <T : Ast> parse(code: String, contextGetter: (GrammarParser) -> ParserRuleContext): T {
     val stream: CharStream = CharStreams.fromString(code)
@@ -43,7 +35,15 @@ fun <T : Ast> List<ParseTree>.visit() = map { it.visit<T>() }
  */
 object Visitor : GrammarBaseVisitor<Ast>() {
     override fun visitProgram(ctx: GrammarParser.ProgramContext) =
-        Program(ctx.statements.map { it.visit<Statement>() })
+        Program(ctx.statements.map {
+            @Suppress("RemoveExplicitTypeArguments")
+            it.visit<Statement>()
+        })
+
+
+    override fun visitCCode(ctx: GrammarParser.CCodeContext) =
+        CCode(ctx.code.text.drop(1).dropLast(1).trimIndent())
+
 
     override fun visitFuncDeclare(ctx: GrammarParser.FuncDeclareContext) =
         FuncDeclare(ctx.type.text.toType(), ctx.name.text, ctx.args.visit(), ctx.block().statements.visit())
@@ -77,4 +77,7 @@ object Visitor : GrammarBaseVisitor<Ast>() {
 
     override fun visitFuncExpr(ctx: GrammarParser.FuncExprContext) =
         ctx.call.visit<FuncCall>()
+
+    override fun visitBinExpr(ctx: GrammarParser.BinExprContext) =
+        BinOp(ctx.left.visit(), ctx.right.visit(), ctx.op.text)
 }
