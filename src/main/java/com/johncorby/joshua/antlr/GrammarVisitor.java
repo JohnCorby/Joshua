@@ -1,4 +1,5 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
+package com.johncorby.joshua.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -28,12 +29,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#funcArg}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncArg(GrammarParser.FuncArgContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link GrammarParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -45,12 +40,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFuncCall(GrammarParser.FuncCallContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link GrammarParser#funcCallArgs}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncCallArgs(GrammarParser.FuncCallArgsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#varDeclare}.
 	 * @param ctx the parse tree
@@ -64,11 +53,11 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarAssign(GrammarParser.VarAssignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#asm}.
+	 * Visit a parse tree produced by {@link GrammarParser#cCode}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitAsm(GrammarParser.AsmContext ctx);
+	T visitCCode(GrammarParser.CCodeContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code strExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

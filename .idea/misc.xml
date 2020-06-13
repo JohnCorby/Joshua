@@ -6,7 +6,7 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/Grammar.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="D:\Code Stuff\Joshua\src\main\java\com\johncorby\joshua\antlr" />
+          <option name="outputDir" value="D:\Code Stuff\Joshua\src\main\java" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="com.johncorby.joshua.antlr" />

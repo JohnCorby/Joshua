@@ -1,4 +1,5 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
+package com.johncorby.joshua.antlr;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
@@ -51,18 +52,6 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncArg(GrammarParser.FuncArgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncArg(GrammarParser.FuncArgContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterBlock(GrammarParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -82,18 +71,6 @@ public class GrammarBaseListener implements GrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFuncCall(GrammarParser.FuncCallContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncCallArgs(GrammarParser.FuncCallArgsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncCallArgs(GrammarParser.FuncCallArgsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -123,13 +100,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAsm(GrammarParser.AsmContext ctx) { }
+	@Override public void enterCCode(GrammarParser.CCodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAsm(GrammarParser.AsmContext ctx) { }
+	@Override public void exitCCode(GrammarParser.CCodeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -1,4 +1,5 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
+package com.johncorby.joshua.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -37,16 +38,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#funcArg}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncArg(GrammarParser.FuncArgContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GrammarParser#funcArg}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncArg(GrammarParser.FuncArgContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link GrammarParser#block}.
 	 * @param ctx the parse tree
 	 */
@@ -66,16 +57,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFuncCall(GrammarParser.FuncCallContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link GrammarParser#funcCallArgs}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncCallArgs(GrammarParser.FuncCallArgsContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GrammarParser#funcCallArgs}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncCallArgs(GrammarParser.FuncCallArgsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#varDeclare}.
 	 * @param ctx the parse tree
@@ -97,15 +78,15 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitVarAssign(GrammarParser.VarAssignContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#asm}.
+	 * Enter a parse tree produced by {@link GrammarParser#cCode}.
 	 * @param ctx the parse tree
 	 */
-	void enterAsm(GrammarParser.AsmContext ctx);
+	void enterCCode(GrammarParser.CCodeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#asm}.
+	 * Exit a parse tree produced by {@link GrammarParser#cCode}.
 	 * @param ctx the parse tree
 	 */
-	void exitAsm(GrammarParser.AsmContext ctx);
+	void exitCCode(GrammarParser.CCodeContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code strExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
