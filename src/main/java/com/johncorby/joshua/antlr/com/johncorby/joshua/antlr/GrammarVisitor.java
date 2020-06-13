@@ -1,4 +1,5 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
+package com.johncorby.joshua.antlr;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**

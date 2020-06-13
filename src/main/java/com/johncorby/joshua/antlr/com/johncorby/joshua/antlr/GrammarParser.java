@@ -1,4 +1,5 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
+package com.johncorby.joshua.antlr;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -111,15 +112,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_program; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterProgram(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterProgram(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitProgram(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitProgram(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitProgram(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitProgram(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -182,15 +183,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_statement; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterStatement(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterStatement(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitStatement(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitStatement(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitStatement(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitStatement(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -272,15 +273,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_funcDeclare; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncDeclare(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFuncDeclare(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncDeclare(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFuncDeclare(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncDeclare(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFuncDeclare(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -370,15 +371,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_funcArg; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncArg(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFuncArg(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncArg(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFuncArg(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncArg(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFuncArg(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -419,15 +420,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_block; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterBlock(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterBlock(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitBlock(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitBlock(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitBlock(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitBlock(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -483,15 +484,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_funcCall; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncCall(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFuncCall(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncCall(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFuncCall(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncCall(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFuncCall(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -538,15 +539,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_funcCallArgs; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncCallArgs(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFuncCallArgs(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncCallArgs(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFuncCallArgs(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncCallArgs(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFuncCallArgs(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -614,15 +615,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_varDeclare; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterVarDeclare(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterVarDeclare(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitVarDeclare(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitVarDeclare(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitVarDeclare(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitVarDeclare(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -678,15 +679,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_varAssign; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterVarAssign(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterVarAssign(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitVarAssign(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitVarAssign(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitVarAssign(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitVarAssign(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -727,15 +728,15 @@ public class GrammarParser extends Parser {
 		@Override public int getRuleIndex() { return RULE_asm; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterAsm(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterAsm(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitAsm(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitAsm(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitAsm(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitAsm(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -781,15 +782,15 @@ public class GrammarParser extends Parser {
 		public StrExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterStrExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterStrExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitStrExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitStrExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitStrExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitStrExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -798,15 +799,15 @@ public class GrammarParser extends Parser {
 		public VarExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterVarExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterVarExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitVarExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitVarExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitVarExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitVarExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -815,15 +816,15 @@ public class GrammarParser extends Parser {
 		public FloatExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFloatExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFloatExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFloatExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFloatExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFloatExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFloatExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -832,15 +833,15 @@ public class GrammarParser extends Parser {
 		public CharExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterCharExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterCharExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitCharExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitCharExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitCharExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitCharExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -857,15 +858,15 @@ public class GrammarParser extends Parser {
 		public BinExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterBinExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterBinExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitBinExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitBinExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitBinExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitBinExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -879,15 +880,15 @@ public class GrammarParser extends Parser {
 		public FuncExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterFuncExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitFuncExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitFuncExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -896,15 +897,15 @@ public class GrammarParser extends Parser {
 		public IntExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterIntExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterIntExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitIntExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitIntExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitIntExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitIntExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -915,15 +916,15 @@ public class GrammarParser extends Parser {
 		public ParenExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterParenExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).enterParenExpr(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitParenExpr(this);
+			if ( listener instanceof com.johncorby.joshua.antlr.GrammarListener) ((com.johncorby.joshua.antlr.GrammarListener)listener).exitParenExpr(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitParenExpr(this);
+			if ( visitor instanceof com.johncorby.joshua.antlr.GrammarVisitor) return ((com.johncorby.joshua.antlr.GrammarVisitor<? extends T>)visitor).visitParenExpr(this);
 			else return visitor.visitChildren(this);
 		}
 	}

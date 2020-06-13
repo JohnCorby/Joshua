@@ -9,14 +9,14 @@ so I've decided to make something that transforms to C.
 This should make it very expansive,
 since C has been around so long
 that there are many many compilers for it
-targetting different architectures.
+targeting different architectures.
 
 # But there are already a ton of great compiled languages, even ones that expand upon C!
 There have been a good number of extensions to C, like C++ or D.
 However, I come from a Java background and therefore am used to Java syntax.
 The problem I have with these extensions is that they introduce a good number of what I see as oddities in their syntax.
 Also, sometimes the languages can be a bit annoying to use when doing bare-metal programming,
-since they might require some runtime or an system to support it.
+since they might require some runtime or a system to support it.
 
 # Also
 This language is not only meant to stick to (hopefully) easier to read syntax,
