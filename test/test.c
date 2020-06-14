@@ -1,0 +1,1 @@
+void main(){int bruh=1;println(bruh);};

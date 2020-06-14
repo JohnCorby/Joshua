@@ -6,19 +6,20 @@ import java.io.File
  * represents the file that will be output
  */
 object OutFile {
-    private val contents = StringBuilder()
-
     init {
         OUT_PATH = IN_PATH.changeExt("c")
+
+        makeC()
+        // todo compile
     }
 
     /**
-     * write to the file
+     * parse to C and write
      */
-    fun finish() = File(OUT_PATH).writeText(contents.toString())
+    fun makeC() {
+        val input = File(IN_PATH).readText()
+        val output = parse<Program>(input) { it.program() }.eval()
 
-    /**
-     * write [lines] to this [OutFile]
-     */
-    fun write(vararg lines: String) = lines.forEach { contents.append(it) }
+        File(OUT_PATH).writeText(output)
+    }
 }

@@ -17,7 +17,7 @@ fun Any?.toPrettyString(): String = when (this) {
 /**
  * create a [Process] and execute it with [args]
  */
-fun processCall(vararg args: String) = ProcessBuilder(*args).inheritIO().start().waitFor()
+fun doCommand(vararg args: String) = ProcessBuilder(*args).inheritIO().start().waitFor()
 
 /**
  * change extension of file name

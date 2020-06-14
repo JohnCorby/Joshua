@@ -7,6 +7,4 @@ fun main(args: Array<String>) {
     IN_PATH = args[0]
 
     OutFile
-    eval()
-    OutFile.finish()
 }

@@ -1,3 +1,4 @@
-c "
-hello my name is {jeff}
-"
+void main() {
+    i32 bruh = 1
+    println(bruh)
+}
