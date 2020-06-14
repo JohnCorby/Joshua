@@ -1,1 +1,1 @@
-void main(){int bruh=1;println(bruh);};
+void main(){unsigned char bruh=255;printf("%i %p",bruh,& bruh );system("pause");};

@@ -7,19 +7,26 @@ import java.io.File
  */
 object OutFile {
     init {
-        OUT_PATH = IN_PATH.changeExt("c")
+        C_PATH = IN_PATH.changeExt("c")
 
-        makeC()
-        // todo compile
+        transform()
+        compile()
     }
 
     /**
-     * parse to C and write
+     * transform input code into c code and write it to a file
      */
-    fun makeC() {
+    private fun transform() {
         val input = File(IN_PATH).readText()
         val output = parse<Program>(input) { it.program() }.eval()
 
-        File(OUT_PATH).writeText(output)
+        File(C_PATH).writeText(output)
+    }
+
+    /**
+     * compile the c program into an executable
+     */
+    private fun compile() {
+        doCommand("make.bat", C_PATH)
     }
 }

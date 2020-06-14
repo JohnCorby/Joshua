@@ -124,18 +124,6 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVarExpr(GrammarParser.VarExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitVarExpr(GrammarParser.VarExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterFloatExpr(GrammarParser.FloatExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -160,6 +148,18 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterVarExpr(GrammarParser.VarExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitVarExpr(GrammarParser.VarExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterBinExpr(GrammarParser.BinExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -167,6 +167,18 @@ public class GrammarBaseListener implements GrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitBinExpr(GrammarParser.BinExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterIntExpr(GrammarParser.IntExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitIntExpr(GrammarParser.IntExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -184,13 +196,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIntExpr(GrammarParser.IntExprContext ctx) { }
+	@Override public void enterCExpr(GrammarParser.CExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIntExpr(GrammarParser.IntExprContext ctx) { }
+	@Override public void exitCExpr(GrammarParser.CExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

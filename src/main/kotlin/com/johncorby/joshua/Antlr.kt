@@ -26,9 +26,8 @@ fun <T : Ast> parse(code: String, contextGetter: (GrammarParser) -> ParserRuleCo
 /**
  * simple alias for [ParseTree.visit]
  */
-@Suppress("UNCHECKED_CAST")
-fun <T : Ast> ParseTree.visit(): T = Visitor.visit(this) as T
-fun <T : Ast> List<ParseTree>.visit() = map { it.visit<T>() }
+inline fun <reified T : Ast> ParseTree.visit(): T = Visitor.visit(this) as T
+inline fun <reified T : Ast> List<ParseTree>.visit() = map { it.visit<T>() }
 
 /**
  * converts antlr tree to [Ast]
@@ -42,7 +41,7 @@ object Visitor : GrammarBaseVisitor<Ast>() {
 
 
     override fun visitCCode(ctx: GrammarParser.CCodeContext) =
-        CCode(ctx.code.text.drop(1).dropLast(1).trimIndent())
+        CCode(ctx.code.text.drop(2).dropLast(2).trimIndent())
 
 
     override fun visitFuncDeclare(ctx: GrammarParser.FuncDeclareContext) =
@@ -71,12 +70,8 @@ object Visitor : GrammarBaseVisitor<Ast>() {
     override fun visitStrExpr(ctx: GrammarParser.StrExprContext) =
         Literal(ctx.value.text.drop(1).dropLast(1))
 
-
     override fun visitVarExpr(ctx: GrammarParser.VarExprContext) =
         Var(ctx.name.text)
-
-    override fun visitFuncExpr(ctx: GrammarParser.FuncExprContext) =
-        ctx.call.visit<FuncCall>()
 
     override fun visitBinExpr(ctx: GrammarParser.BinExprContext) =
         BinOp(ctx.left.visit(), ctx.right.visit(), ctx.op.text)

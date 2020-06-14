@@ -9,7 +9,8 @@ statement: cCode
          | varAssign
          ;
 
-cCode: 'c' code=STR_LITERAL;
+cCode: code=C_CODE;
+C_CODE: '<<' .+? '>>';
 
 funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
 block: '{' statements+=statement* '}';
@@ -19,17 +20,17 @@ funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
-expr: '(' expr ')' #parenExpr
-    | left=expr op=('*'|'/'|'%') right=expr #binExpr
-    | left=expr op=('+'|'-') right=expr #binExpr
-    | call=funcCall #funcExpr
-    | name=IDENT #varExpr
+expr: cCode #cExpr
     | value=INT_LITERAL #intExpr
     | value=FLOAT_LITERAL #floatExpr
     | value=CHAR_LITERAL #charExpr
     | value=STR_LITERAL #strExpr
+    | name=IDENT #varExpr
+    | call=funcCall #funcExpr
+    | '(' expr ')' #parenExpr
+    | left=expr op=('*'|'/'|'%') right=expr #binExpr
+    | left=expr op=('+'|'-') right=expr #binExpr
     ;
-
 
 INT_LITERAL: '-'? DIGIT+;
 FLOAT_LITERAL: INT_LITERAL | '-'? DIGIT* '.' DIGIT+;

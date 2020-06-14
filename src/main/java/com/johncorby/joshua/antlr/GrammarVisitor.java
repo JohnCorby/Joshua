@@ -66,13 +66,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStrExpr(GrammarParser.StrExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code varExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitVarExpr(GrammarParser.VarExprContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code floatExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
@@ -87,12 +80,26 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharExpr(GrammarParser.CharExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code varExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarExpr(GrammarParser.VarExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code binExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBinExpr(GrammarParser.BinExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code intExpr}
+	 * labeled alternative in {@link GrammarParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIntExpr(GrammarParser.IntExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code funcExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
@@ -101,12 +108,12 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncExpr(GrammarParser.FuncExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code intExpr}
+	 * Visit a parse tree produced by the {@code cExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIntExpr(GrammarParser.IntExprContext ctx);
+	T visitCExpr(GrammarParser.CExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

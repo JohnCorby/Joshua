@@ -16,9 +16,9 @@ data class Program(val statements: List<Statement>) : Ast {
     override fun eval() = statements.joinToString("") { "${it.eval()};" }
 }
 
-data class CCode(val code: String) : Statement {
+data class CCode(val code: String) : Statement, Expr {
     override fun eval() =
-        code.replace("""\{(.+?)}""".toRegex())
+        code.replace("<(.+?)>".toRegex())
         { parse<Expr>(it.groupValues[1], GrammarParser::expr).eval() }
 }
 
@@ -49,7 +49,11 @@ data class VarAssign(val name: String, val value: Expr) : Statement {
 
 
 data class Literal<T>(val value: T) : Expr {
-    override fun eval() = value.toString()
+    override fun eval() = when (value) {
+        is Char -> "'$value'"
+        is String -> "\"$value\""
+        else -> value.toString()
+    }
 }
 
 data class Var(val name: String) : Expr {
