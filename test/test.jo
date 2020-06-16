@@ -1,5 +1,4 @@
 void main() {
-    ui8 bruh = 255
-    printf("%i %p", bruh, <<& <bruh> >>)
-    system("pause")
+    ubyte bruh = 255
+    printf("%i %p\n", bruh, <<& <bruh> >>)
 }

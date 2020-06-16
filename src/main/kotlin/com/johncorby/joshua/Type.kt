@@ -7,26 +7,29 @@ enum class Type(val c: String) {
     VOID("void"),
 
 
-    I8("char"),
-    UI8("unsigned char"),
+    BYTE("char"),
+    UBYTE("unsigned char"),
 
-    I16("short"),
-    UI16("unsigned short"),
+    SHORT("short"),
+    USHORT("unsigned short"),
 
-    I32("int"),
-    UI32("unsigned int"),
+    INT("int"),
+    UINT("unsigned int"),
 
-    I64("long"),
-    UI64("unsigned long"),
+    LONG("long"),
+    ULONG("unsigned long"),
 
 
-    F32("float"),
+    FLOAT("float"),
 
-    F64("double")
-
+    DOUBLE("double")
 }
 
 /**
  * tries to convert this [String] to [Type]
  */
-fun String.toType() = Type.valueOf(toUpperCase())
+fun String.toType() = try {
+    Type.valueOf(toUpperCase())
+} catch (e: IllegalArgumentException) {
+    error("type $this doesnt exist")
+}
