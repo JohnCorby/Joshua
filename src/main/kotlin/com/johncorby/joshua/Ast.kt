@@ -60,9 +60,10 @@ data class Var(val name: String) : Expr {
     override fun eval() = name
 }
 
-/**
- * todo make [op] an enum instead of a plain string lol
- */
-data class BinOp(val left: Expr, val right: Expr, val op: String) : Expr {
-    override fun eval() = "${left.eval()}$op${right.eval()}"
+data class Binary(val left: Expr, val right: Expr, val op: BinaryOp) : Expr {
+    override fun eval() = "${left.eval()}${op.c}${right.eval()}"
+}
+
+data class Unary(val expr: Expr, val op: UnaryOp) : Expr {
+    override fun eval() = "${op.c}${expr.eval()}"
 }

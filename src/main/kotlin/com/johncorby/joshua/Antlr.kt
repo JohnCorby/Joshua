@@ -41,7 +41,7 @@ object Visitor : GrammarBaseVisitor<Ast>() {
 
 
     override fun visitCCode(ctx: GrammarParser.CCodeContext) =
-        CCode(ctx.code.text.drop(2).dropLast(2).trimIndent())
+        CCode(ctx.text.drop(2).dropLast(2).trimIndent())
 
 
     override fun visitFuncDeclare(ctx: GrammarParser.FuncDeclareContext) =
@@ -58,21 +58,23 @@ object Visitor : GrammarBaseVisitor<Ast>() {
         VarAssign(ctx.name.text, ctx.value.visit())
 
 
-    override fun visitIntExpr(ctx: GrammarParser.IntExprContext) =
-        Literal(ctx.value.text.toInt())
-
-    override fun visitFloatExpr(ctx: GrammarParser.FloatExprContext) =
-        Literal(ctx.value.text.toFloat())
-
-    override fun visitCharExpr(ctx: GrammarParser.CharExprContext) =
-        Literal(ctx.value.text[1])
-
-    override fun visitStrExpr(ctx: GrammarParser.StrExprContext) =
-        Literal(ctx.value.text.drop(1).dropLast(1))
+    override fun visitLitExpr(ctx: GrammarParser.LitExprContext) = Literal(
+        when {
+            ctx.INT_LITERAL() != null -> ctx.text.toInt()
+            ctx.FLOAT_LITERAL() != null -> ctx.text.toFloat()
+            ctx.BOOL_LITERAL() != null -> ctx.text.toBoolean()
+            ctx.CHAR_LITERAL() != null -> ctx.text[1]
+            ctx.STR_LITERAL() != null -> ctx.text.drop(1).dropLast(1)
+            else -> error("invalid literal ${ctx.text}")
+        }
+    )
 
     override fun visitVarExpr(ctx: GrammarParser.VarExprContext) =
-        Var(ctx.name.text)
+        Var(ctx.text)
+
+    override fun visitUnExpr(ctx: GrammarParser.UnExprContext) =
+        Unary(ctx.expr().visit(), ctx.op.text.toUnaryOp())
 
     override fun visitBinExpr(ctx: GrammarParser.BinExprContext) =
-        BinOp(ctx.left.visit(), ctx.right.visit(), ctx.op.text)
+        Binary(ctx.left.visit(), ctx.right.visit(), ctx.op.text.toBinaryOp())
 }

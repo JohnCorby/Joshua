@@ -7,9 +7,10 @@ statement: cCode
          | funcCall
          | varDeclare
          | varAssign
+         //| if
          ;
 
-cCode: code=C_CODE;
+cCode: C_CODE;
 C_CODE: '<<' .+? '>>';
 
 funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
@@ -20,20 +21,27 @@ funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
+//if: 'if' '(' expr ')'
+
 expr: cCode #cExpr
-    | value=INT_LITERAL #intExpr
-    | value=FLOAT_LITERAL #floatExpr
-    | value=CHAR_LITERAL #charExpr
-    | value=STR_LITERAL #strExpr
-    | name=IDENT #varExpr
-    | call=funcCall #funcExpr
+    | INT_LITERAL #litExpr
+    | FLOAT_LITERAL #litExpr
+    | BOOL_LITERAL #litExpr
+    | CHAR_LITERAL #litExpr
+    | STR_LITERAL #litExpr
+    | IDENT #varExpr
+    | funcCall #funcExpr
     | '(' expr ')' #parenExpr
+    | op=('-'|'!') expr #unExpr
     | left=expr op=('*'|'/'|'%') right=expr #binExpr
     | left=expr op=('+'|'-') right=expr #binExpr
+    | left=expr op=('<'|'<='|'>'|'>=') right=expr #binExpr
+    | left=expr op=('=='|'!=') right=expr #binExpr
     ;
 
 INT_LITERAL: '-'? DIGIT+;
 FLOAT_LITERAL: INT_LITERAL | '-'? DIGIT* '.' DIGIT+;
+BOOL_LITERAL: 'true' | 'false';
 CHAR_LITERAL: '\'' . '\'';
 STR_LITERAL: '"' .*? '"';
 

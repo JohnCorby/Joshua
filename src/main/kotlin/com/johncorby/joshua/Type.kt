@@ -28,8 +28,4 @@ enum class Type(val c: String) {
 /**
  * tries to convert this [String] to [Type]
  */
-fun String.toType() = try {
-    Type.valueOf(toUpperCase())
-} catch (e: IllegalArgumentException) {
-    error("type $this doesnt exist")
-}
+fun String.toType() = Type.values().find { this == it.name.toLowerCase() } ?: error("type $this doesnt exist")
