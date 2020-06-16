@@ -38,16 +38,6 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitCCode(GrammarParser.CCodeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#funcDeclare}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncDeclare(GrammarParser.FuncDeclareContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link GrammarParser#funcDeclare}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link GrammarParser#block}.
 	 * @param ctx the parse tree
 	 */
@@ -57,6 +47,16 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBlock(GrammarParser.BlockContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * @param ctx the parse tree
+	 */
+	void enterFuncDeclare(GrammarParser.FuncDeclareContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * @param ctx the parse tree
+	 */
+	void exitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#funcCall}.
 	 * @param ctx the parse tree
@@ -87,6 +87,26 @@ public interface GrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarAssign(GrammarParser.VarAssignContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfStatement(GrammarParser.IfStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfStatement(GrammarParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterUntilStatement(GrammarParser.UntilStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitUntilStatement(GrammarParser.UntilStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

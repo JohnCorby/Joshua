@@ -18,7 +18,7 @@ object OutFile {
      */
     private fun transform() {
         val input = File(IN_PATH).readText()
-        val output = parse<Program>(input) { it.program() }.eval()
+        val output = parse<Program>(input) { it.program() }.toString()
 
         File(C_PATH).writeText(output)
     }

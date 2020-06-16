@@ -7,21 +7,23 @@ statement: cCode
          | funcCall
          | varDeclare
          | varAssign
-         //| if
+         | ifStatement
+         | untilStatement
          ;
 
 cCode: C_CODE;
 C_CODE: '<<' .+? '>>';
 
-funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
-block: '{' statements+=statement* '}';
+block: statements+=statement | '{' statements+=statement* '}';
 
+funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
 funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 
 varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
-//if: 'if' '(' expr ')'
+ifStatement: 'if' '(' cond=expr ')' thenBlock=block ('else' elseBlock=block)?;
+untilStatement: 'until' '(' cond=expr ')' block;
 
 expr: cCode #cExpr
     | INT_LITERAL #litExpr
@@ -39,8 +41,8 @@ expr: cCode #cExpr
     | left=expr op=('=='|'!=') right=expr #binExpr
     ;
 
-INT_LITERAL: '-'? DIGIT+;
-FLOAT_LITERAL: INT_LITERAL | '-'? DIGIT* '.' DIGIT+;
+INT_LITERAL: DIGIT+;
+FLOAT_LITERAL: DIGIT* '.' DIGIT*;
 BOOL_LITERAL: 'true' | 'false';
 CHAR_LITERAL: '\'' . '\'';
 STR_LITERAL: '"' .*? '"';

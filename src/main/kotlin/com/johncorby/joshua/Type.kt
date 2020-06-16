@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.johncorby.joshua
 
 /**
@@ -22,7 +24,9 @@ enum class Type(val c: String) {
 
     FLOAT("float"),
 
-    DOUBLE("double")
+    DOUBLE("double");
+
+    override fun toString() = c
 }
 
 /**

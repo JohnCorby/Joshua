@@ -29,17 +29,17 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCCode(GrammarParser.CCodeContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#funcDeclare}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link GrammarParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitBlock(GrammarParser.BlockContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#funcCall}.
 	 * @param ctx the parse tree
@@ -58,6 +58,18 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVarAssign(GrammarParser.VarAssignContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIfStatement(GrammarParser.IfStatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitUntilStatement(GrammarParser.UntilStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

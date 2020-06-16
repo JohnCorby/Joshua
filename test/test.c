@@ -1,1 +1,1 @@
-void main(){unsigned char bruh=255;printf("%i %p\n",bruh,& bruh );};
+void main(){int i=10;printf("i started at %i\n",i);while(!(i==0)){i=i-1;printf("i is now %i\n",i);if(i==2){puts("i is 2!!!");};};printf("i ended at %i\n",i);};

@@ -1,3 +1,5 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.johncorby.joshua
 
 enum class BinaryOp(val op: String, val c: String = op) {
@@ -14,14 +16,18 @@ enum class BinaryOp(val op: String, val c: String = op) {
     GTE(">="),
 
     EQ("=="),
-    NEQ("!="),
+    NEQ("!=");
+
+    override fun toString() = c
 }
 
 fun String.toBinaryOp() = BinaryOp.values().find { this == it.op } ?: error("binary op $this doesnt exist")
 
 enum class UnaryOp(val op: String, val c: String = op) {
     NEGATE("-"),
-    NOT("!"),
+    NOT("!");
+
+    override fun toString() = c
 }
 
 fun String.toUnaryOp() = UnaryOp.values().find { this == it.op } ?: error("unary op $this doesnt exist")

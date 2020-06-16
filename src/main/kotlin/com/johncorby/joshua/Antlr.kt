@@ -29,23 +29,25 @@ fun <T : Ast> parse(code: String, contextGetter: (GrammarParser) -> ParserRuleCo
 inline fun <reified T : Ast> ParseTree.visit(): T = Visitor.visit(this) as T
 inline fun <reified T : Ast> List<ParseTree>.visit() = map { it.visit<T>() }
 
+
 /**
  * converts antlr tree to [Ast]
  */
 object Visitor : GrammarBaseVisitor<Ast>() {
     override fun visitProgram(ctx: GrammarParser.ProgramContext) =
-        Program(ctx.statements.map {
-            @Suppress("RemoveExplicitTypeArguments")
-            it.visit<Statement>()
-        })
+        Program(ctx.statements.visit())
 
 
     override fun visitCCode(ctx: GrammarParser.CCodeContext) =
         CCode(ctx.text.drop(2).dropLast(2).trimIndent())
 
 
+    override fun visitBlock(ctx: GrammarParser.BlockContext) =
+        Block(ctx.statements.visit())
+
+
     override fun visitFuncDeclare(ctx: GrammarParser.FuncDeclareContext) =
-        FuncDeclare(ctx.type.text.toType(), ctx.name.text, ctx.args.visit(), ctx.block().statements.visit())
+        FuncDeclare(ctx.type.text.toType(), ctx.name.text, ctx.args.visit(), ctx.block().visit())
 
     override fun visitFuncCall(ctx: GrammarParser.FuncCallContext) =
         FuncCall(ctx.name.text, ctx.args.visit())
@@ -56,6 +58,13 @@ object Visitor : GrammarBaseVisitor<Ast>() {
 
     override fun visitVarAssign(ctx: GrammarParser.VarAssignContext) =
         VarAssign(ctx.name.text, ctx.value.visit())
+
+
+    override fun visitIfStatement(ctx: GrammarParser.IfStatementContext) =
+        If(ctx.cond.visit(), ctx.thenBlock.visit(), ctx.elseBlock?.visit())
+
+    override fun visitUntilStatement(ctx: GrammarParser.UntilStatementContext) =
+        Until(ctx.cond.visit(), ctx.block().visit())
 
 
     override fun visitLitExpr(ctx: GrammarParser.LitExprContext) = Literal(
