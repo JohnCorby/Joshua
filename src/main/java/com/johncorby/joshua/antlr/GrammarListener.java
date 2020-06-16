@@ -88,25 +88,35 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitVarAssign(GrammarParser.VarAssignContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * Enter a parse tree produced by {@link GrammarParser#iff}.
 	 * @param ctx the parse tree
 	 */
-	void enterIfStatement(GrammarParser.IfStatementContext ctx);
+	void enterIff(GrammarParser.IffContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * Exit a parse tree produced by {@link GrammarParser#iff}.
 	 * @param ctx the parse tree
 	 */
-	void exitIfStatement(GrammarParser.IfStatementContext ctx);
+	void exitIff(GrammarParser.IffContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * Enter a parse tree produced by {@link GrammarParser#until}.
 	 * @param ctx the parse tree
 	 */
-	void enterUntilStatement(GrammarParser.UntilStatementContext ctx);
+	void enterUntil(GrammarParser.UntilContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * Exit a parse tree produced by {@link GrammarParser#until}.
 	 * @param ctx the parse tree
 	 */
-	void exitUntilStatement(GrammarParser.UntilStatementContext ctx);
+	void exitUntil(GrammarParser.UntilContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link GrammarParser#forr}.
+	 * @param ctx the parse tree
+	 */
+	void enterForr(GrammarParser.ForrContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link GrammarParser#forr}.
+	 * @param ctx the parse tree
+	 */
+	void exitForr(GrammarParser.ForrContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

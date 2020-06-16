@@ -10,4 +10,9 @@ void main() {
         if (i == 2) puts("i is 2!!!")
     }
     printf("i ended at %i\n", i)
+
+
+
+    for (int i = 0; i < 10; i=i+1)
+        printf("i is now %i\n", i)
 }

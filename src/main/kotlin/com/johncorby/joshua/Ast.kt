@@ -63,6 +63,10 @@ data class Until(val condition: Expr, val block: Block) : Statement {
     override fun toString() = "while(!($condition))$block"
 }
 
+data class For(val initializer: VarDeclare, val condition: Expr, val update: Statement, val block: Block) : Statement {
+    override fun toString() = "for($initializer;$condition;$update)$block"
+}
+
 
 data class Literal<T>(val value: T) : Expr {
     override fun toString() = when (value) {

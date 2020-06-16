@@ -7,8 +7,9 @@ statement: cCode
          | funcCall
          | varDeclare
          | varAssign
-         | ifStatement
-         | untilStatement
+         | iff
+         | until
+         | forr
          ;
 
 cCode: C_CODE;
@@ -22,8 +23,9 @@ funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
-ifStatement: 'if' '(' cond=expr ')' thenBlock=block ('else' elseBlock=block)?;
-untilStatement: 'until' '(' cond=expr ')' block;
+iff: 'if' '(' cond=expr ')' thenBlock=block ('else' elseBlock=block)?;
+until: 'until' '(' cond=expr ')' block;
+forr: 'for' '(' init=varDeclare ';' cond=expr ';' update=statement ')' block;
 
 expr: cCode #cExpr
     | INT_LITERAL #litExpr

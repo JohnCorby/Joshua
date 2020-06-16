@@ -59,17 +59,23 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarAssign(GrammarParser.VarAssignContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#ifStatement}.
+	 * Visit a parse tree produced by {@link GrammarParser#iff}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitIfStatement(GrammarParser.IfStatementContext ctx);
+	T visitIff(GrammarParser.IffContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#untilStatement}.
+	 * Visit a parse tree produced by {@link GrammarParser#until}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitUntilStatement(GrammarParser.UntilStatementContext ctx);
+	T visitUntil(GrammarParser.UntilContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link GrammarParser#forr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitForr(GrammarParser.ForrContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

@@ -60,11 +60,14 @@ object Visitor : GrammarBaseVisitor<Ast>() {
         VarAssign(ctx.name.text, ctx.value.visit())
 
 
-    override fun visitIfStatement(ctx: GrammarParser.IfStatementContext) =
+    override fun visitIff(ctx: GrammarParser.IffContext) =
         If(ctx.cond.visit(), ctx.thenBlock.visit(), ctx.elseBlock?.visit())
 
-    override fun visitUntilStatement(ctx: GrammarParser.UntilStatementContext) =
+    override fun visitUntil(ctx: GrammarParser.UntilContext) =
         Until(ctx.cond.visit(), ctx.block().visit())
+
+    override fun visitForr(ctx: GrammarParser.ForrContext) =
+        For(ctx.init.visit(), ctx.cond.visit(), ctx.update.visit(), ctx.block().visit())
 
 
     override fun visitLitExpr(ctx: GrammarParser.LitExprContext) = Literal(
