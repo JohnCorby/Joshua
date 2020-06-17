@@ -9,9 +9,10 @@ call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary
 cd %DIR%
 cl %FILE%
 echo finished with exit code %ERRORLEVEL%
-
+if errorlevel 1 exit
 
 
 echo running
 %OUT%
 echo finished with exit code %ERRORLEVEL%
+if errorlevel 1 exit

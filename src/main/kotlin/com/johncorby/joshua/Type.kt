@@ -1,30 +1,30 @@
-@file:Suppress("MemberVisibilityCanBePrivate")
-
 package com.johncorby.joshua
 
 /**
  * represents a data type
  */
-enum class Type(val c: String) {
-    VOID("void"),
-
-
+enum class Type(private val c: String) {
     BYTE("char"),
     UBYTE("unsigned char"),
-
     SHORT("short"),
     USHORT("unsigned short"),
-
     INT("int"),
     UINT("unsigned int"),
-
-    LONG("long"),
-    ULONG("unsigned long"),
-
+    LONG("long long"),
+    ULONG("unsigned long long"),
 
     FLOAT("float"),
+    DOUBLE("double"),
 
-    DOUBLE("double");
+    BOOL("int"),
+
+    CHAR("char"),
+
+    STRING("char*"),
+
+    VOID("void"),
+    PTR("unsigned long long");
+
 
     override fun toString() = c
 }

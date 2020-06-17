@@ -1,9 +1,14 @@
 grammar Grammar;
 
-program: statements+=statement* EOF;
+program: declares+=declare* EOF;
+
+declare: cCode
+           | varDeclare
+           | funcDeclare
+           | structDeclare
+           ;
 
 statement: cCode
-         | funcDeclare
          | funcCall
          | varDeclare
          | varAssign
@@ -20,12 +25,14 @@ block: statements+=statement | '{' statements+=statement* '}';
 funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
 funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 
-varDeclare: type=IDENT name=IDENT ('=' value=expr)?;
+varDeclare: type=IDENT name=IDENT ('=' init=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
 iff: 'if' '(' cond=expr ')' thenBlock=block ('else' elseBlock=block)?;
 until: 'until' '(' cond=expr ')' block;
 forr: 'for' '(' init=varDeclare ';' cond=expr ';' update=statement ')' block;
+
+structDeclare: 'struct' name=IDENT '{' declares+=declare* '}' ;
 
 expr: cCode #cExpr
     | INT_LITERAL #litExpr
@@ -36,7 +43,7 @@ expr: cCode #cExpr
     | IDENT #varExpr
     | funcCall #funcExpr
     | '(' expr ')' #parenExpr
-    | op=('-'|'!') expr #unExpr
+    | <assoc=right> op=('-'|'!') expr #unExpr
     | left=expr op=('*'|'/'|'%') right=expr #binExpr
     | left=expr op=('+'|'-') right=expr #binExpr
     | left=expr op=('<'|'<='|'>'|'>=') right=expr #binExpr

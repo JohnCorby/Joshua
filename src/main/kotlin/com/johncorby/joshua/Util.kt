@@ -10,7 +10,17 @@ import org.antlr.v4.runtime.tree.Tree
  */
 fun Any?.toPrettyString(): String = when (this) {
     is Array<*> -> this.contentDeepToString()
+    is ByteArray    -> contentToString()
+    is ShortArray   -> contentToString()
+    is IntArray     -> contentToString()
+    is LongArray    -> contentToString()
+    is FloatArray   -> contentToString()
+    is DoubleArray  -> contentToString()
+    is CharArray    -> contentToString()
+    is BooleanArray -> contentToString()
+
     is Tree -> toStringTree()
+
     else -> toString()
 }
 
