@@ -23,7 +23,12 @@ enum class Type(private val c: String) {
     STRING("char*"),
 
     VOID("void"),
-    PTR("unsigned long long");
+
+    /**
+     * pointers are referred to as addresses, since they're really just stored as a number
+     * 
+     */
+    ADDR("unsigned long long");
 
 
     override fun toString() = c
