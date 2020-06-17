@@ -18,15 +18,15 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitProgram(GrammarParser.ProgramContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#declare}.
+	 * Enter a parse tree produced by {@link GrammarParser#define}.
 	 * @param ctx the parse tree
 	 */
-	void enterDeclare(GrammarParser.DeclareContext ctx);
+	void enterDefine(GrammarParser.DefineContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#declare}.
+	 * Exit a parse tree produced by {@link GrammarParser#define}.
 	 * @param ctx the parse tree
 	 */
-	void exitDeclare(GrammarParser.DeclareContext ctx);
+	void exitDefine(GrammarParser.DefineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#statement}.
 	 * @param ctx the parse tree
@@ -58,15 +58,15 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitBlock(GrammarParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * Enter a parse tree produced by {@link GrammarParser#funcDefine}.
 	 * @param ctx the parse tree
 	 */
-	void enterFuncDeclare(GrammarParser.FuncDeclareContext ctx);
+	void enterFuncDefine(GrammarParser.FuncDefineContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * Exit a parse tree produced by {@link GrammarParser#funcDefine}.
 	 * @param ctx the parse tree
 	 */
-	void exitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
+	void exitFuncDefine(GrammarParser.FuncDefineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#funcCall}.
 	 * @param ctx the parse tree
@@ -78,15 +78,15 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitFuncCall(GrammarParser.FuncCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#varDeclare}.
+	 * Enter a parse tree produced by {@link GrammarParser#varDefine}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarDeclare(GrammarParser.VarDeclareContext ctx);
+	void enterVarDefine(GrammarParser.VarDefineContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#varDeclare}.
+	 * Exit a parse tree produced by {@link GrammarParser#varDefine}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarDeclare(GrammarParser.VarDeclareContext ctx);
+	void exitVarDefine(GrammarParser.VarDefineContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link GrammarParser#varAssign}.
 	 * @param ctx the parse tree
@@ -128,15 +128,15 @@ public interface GrammarListener extends ParseTreeListener {
 	 */
 	void exitForr(GrammarParser.ForrContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link GrammarParser#structDeclare}.
+	 * Enter a parse tree produced by {@link GrammarParser#structDefine}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructDeclare(GrammarParser.StructDeclareContext ctx);
+	void enterStructDefine(GrammarParser.StructDefineContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link GrammarParser#structDeclare}.
+	 * Exit a parse tree produced by {@link GrammarParser#structDefine}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructDeclare(GrammarParser.StructDeclareContext ctx);
+	void exitStructDefine(GrammarParser.StructDefineContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

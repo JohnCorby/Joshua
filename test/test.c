@@ -1,1 +1,1 @@
-struct bruh{int hi;struct inner{short nice;};};void bruh$hello(unsigned long long this,int suck,char my,unsigned long long balls){puts("fuck you");printf("%i %i %i %i\n",sizeof(char), sizeof(short), sizeof(int), sizeof(long long));}void main(){bruh$hello(0,0,0,0);}
+uh oh;struct bruh{signed int hi;struct inner{signed short nice;};};void bruh$hello(unsigned long long this,signed int suck,signed char my,unsigned long long balls){puts("fuck you");printf("%i %i %i %i\n",sizeof(char), sizeof(short), sizeof(int), sizeof(long long));}void main(){}

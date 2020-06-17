@@ -74,18 +74,18 @@ BLOCK_COMMENT
 
 rule names:
 program
-declare
+define
 statement
 cCode
 block
-funcDeclare
+funcDefine
 funcCall
-varDeclare
+varDefine
 varAssign
 iff
 until
 forr
-structDeclare
+structDefine
 expr
 
 

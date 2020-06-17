@@ -1,16 +1,16 @@
 grammar Grammar;
 
-program: declares+=declare* EOF;
+program: defines+=define* EOF;
 
-declare: cCode
-           | varDeclare
-           | funcDeclare
-           | structDeclare
+define: cCode
+           | varDefine
+           | funcDefine
+           | structDefine
            ;
 
 statement: cCode
          | funcCall
-         | varDeclare
+         | varDefine
          | varAssign
          | iff
          | until
@@ -22,17 +22,17 @@ C_CODE: '<<' .+? '>>';
 
 block: statements+=statement | '{' statements+=statement* '}';
 
-funcDeclare: type=IDENT name=IDENT '(' (args+=varDeclare (',' args+=varDeclare)*)? ')' block;
+funcDefine: type=IDENT name=IDENT '(' (args+=varDefine (',' args+=varDefine)*)? ')' block;
 funcCall: name=IDENT '(' (args+=expr (',' args+=expr)*)? ')';
 
-varDeclare: type=IDENT name=IDENT ('=' init=expr)?;
+varDefine: type=IDENT name=IDENT ('=' init=expr)?;
 varAssign: name=IDENT '=' value=expr;
 
 iff: 'if' '(' cond=expr ')' thenBlock=block ('else' elseBlock=block)?;
 until: 'until' '(' cond=expr ')' block;
-forr: 'for' '(' init=varDeclare ';' cond=expr ';' update=statement ')' block;
+forr: 'for' '(' init=varDefine ';' cond=expr ';' update=statement ')' block;
 
-structDeclare: 'struct' name=IDENT '{' declares+=declare* '}' ;
+structDefine: 'struct' name=IDENT '{' defines+=define* '}' ;
 
 expr: cCode #cExpr
     | INT_LITERAL #litExpr

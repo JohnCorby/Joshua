@@ -1,13 +1,17 @@
 // Generated from D:/Code Stuff/Joshua\Grammar.g4 by ANTLR 4.8
 package com.johncorby.joshua.antlr;
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
-import java.util.List;
-import java.util.Iterator;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class GrammarParser extends Parser {
@@ -23,14 +27,14 @@ public class GrammarParser extends Parser {
 		C_CODE=25, INT_LITERAL=26, FLOAT_LITERAL=27, BOOL_LITERAL=28, CHAR_LITERAL=29, 
 		STR_LITERAL=30, IDENT=31, WHITESPACE=32, COMMENT=33, BLOCK_COMMENT=34;
 	public static final int
-		RULE_program = 0, RULE_declare = 1, RULE_statement = 2, RULE_cCode = 3, 
-		RULE_block = 4, RULE_funcDeclare = 5, RULE_funcCall = 6, RULE_varDeclare = 7, 
-		RULE_varAssign = 8, RULE_iff = 9, RULE_until = 10, RULE_forr = 11, RULE_structDeclare = 12, 
+		RULE_program = 0, RULE_define = 1, RULE_statement = 2, RULE_cCode = 3, 
+		RULE_block = 4, RULE_funcDefine = 5, RULE_funcCall = 6, RULE_varDefine = 7, 
+		RULE_varAssign = 8, RULE_iff = 9, RULE_until = 10, RULE_forr = 11, RULE_structDefine = 12, 
 		RULE_expr = 13;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"program", "declare", "statement", "cCode", "block", "funcDeclare", "funcCall", 
-			"varDeclare", "varAssign", "iff", "until", "forr", "structDeclare", "expr"
+			"program", "define", "statement", "cCode", "block", "funcDefine", "funcCall", 
+			"varDefine", "varAssign", "iff", "until", "forr", "structDefine", "expr"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -103,14 +107,14 @@ public class GrammarParser extends Parser {
 	}
 
 	public static class ProgramContext extends ParserRuleContext {
-		public DeclareContext declare;
-		public List<DeclareContext> declares = new ArrayList<DeclareContext>();
+		public DefineContext define;
+		public List<DefineContext> defines = new ArrayList<DefineContext>();
 		public TerminalNode EOF() { return getToken(GrammarParser.EOF, 0); }
-		public List<DeclareContext> declare() {
-			return getRuleContexts(DeclareContext.class);
+		public List<DefineContext> define() {
+			return getRuleContexts(DefineContext.class);
 		}
-		public DeclareContext declare(int i) {
-			return getRuleContext(DeclareContext.class,i);
+		public DefineContext define(int i) {
+			return getRuleContext(DefineContext.class,i);
 		}
 		public ProgramContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -145,8 +149,8 @@ public class GrammarParser extends Parser {
 				{
 				{
 				setState(28);
-				((ProgramContext)_localctx).declare = declare();
-				((ProgramContext)_localctx).declares.add(((ProgramContext)_localctx).declare);
+				((ProgramContext)_localctx).define = define();
+				((ProgramContext)_localctx).defines.add(((ProgramContext)_localctx).define);
 				}
 				}
 				setState(33);
@@ -168,41 +172,41 @@ public class GrammarParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DeclareContext extends ParserRuleContext {
+	public static class DefineContext extends ParserRuleContext {
 		public CCodeContext cCode() {
 			return getRuleContext(CCodeContext.class,0);
 		}
-		public VarDeclareContext varDeclare() {
-			return getRuleContext(VarDeclareContext.class,0);
+		public VarDefineContext varDefine() {
+			return getRuleContext(VarDefineContext.class,0);
 		}
-		public FuncDeclareContext funcDeclare() {
-			return getRuleContext(FuncDeclareContext.class,0);
+		public FuncDefineContext funcDefine() {
+			return getRuleContext(FuncDefineContext.class,0);
 		}
-		public StructDeclareContext structDeclare() {
-			return getRuleContext(StructDeclareContext.class,0);
+		public StructDefineContext structDefine() {
+			return getRuleContext(StructDefineContext.class,0);
 		}
-		public DeclareContext(ParserRuleContext parent, int invokingState) {
+		public DefineContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_declare; }
+		@Override public int getRuleIndex() { return RULE_define; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterDefine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitDefine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitDeclare(this);
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitDefine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final DeclareContext declare() throws RecognitionException {
-		DeclareContext _localctx = new DeclareContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_declare);
+	public final DefineContext define() throws RecognitionException {
+		DefineContext _localctx = new DefineContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_define);
 		try {
 			setState(40);
 			_errHandler.sync(this);
@@ -218,21 +222,21 @@ public class GrammarParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(37);
-				varDeclare();
+				varDefine();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(38);
-				funcDeclare();
+				funcDefine();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(39);
-				structDeclare();
+				structDefine();
 				}
 				break;
 			}
@@ -255,8 +259,8 @@ public class GrammarParser extends Parser {
 		public FuncCallContext funcCall() {
 			return getRuleContext(FuncCallContext.class,0);
 		}
-		public VarDeclareContext varDeclare() {
-			return getRuleContext(VarDeclareContext.class,0);
+		public VarDefineContext varDefine() {
+			return getRuleContext(VarDefineContext.class,0);
 		}
 		public VarAssignContext varAssign() {
 			return getRuleContext(VarAssignContext.class,0);
@@ -314,7 +318,7 @@ public class GrammarParser extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(44);
-				varDeclare();
+				varDefine();
 				}
 				break;
 			case 4:
@@ -487,11 +491,11 @@ public class GrammarParser extends Parser {
 		return _localctx;
 	}
 
-	public static class FuncDeclareContext extends ParserRuleContext {
+	public static class FuncDefineContext extends ParserRuleContext {
 		public Token type;
 		public Token name;
-		public VarDeclareContext varDeclare;
-		public List<VarDeclareContext> args = new ArrayList<VarDeclareContext>();
+		public VarDefineContext varDefine;
+		public List<VarDefineContext> args = new ArrayList<VarDefineContext>();
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
@@ -499,42 +503,42 @@ public class GrammarParser extends Parser {
 		public TerminalNode IDENT(int i) {
 			return getToken(GrammarParser.IDENT, i);
 		}
-		public List<VarDeclareContext> varDeclare() {
-			return getRuleContexts(VarDeclareContext.class);
+		public List<VarDefineContext> varDefine() {
+			return getRuleContexts(VarDefineContext.class);
 		}
-		public VarDeclareContext varDeclare(int i) {
-			return getRuleContext(VarDeclareContext.class,i);
+		public VarDefineContext varDefine(int i) {
+			return getRuleContext(VarDefineContext.class,i);
 		}
-		public FuncDeclareContext(ParserRuleContext parent, int invokingState) {
+		public FuncDefineContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_funcDeclare; }
+		@Override public int getRuleIndex() { return RULE_funcDefine; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterFuncDefine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitFuncDefine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncDeclare(this);
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitFuncDefine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final FuncDeclareContext funcDeclare() throws RecognitionException {
-		FuncDeclareContext _localctx = new FuncDeclareContext(_ctx, getState());
-		enterRule(_localctx, 10, RULE_funcDeclare);
+	public final FuncDefineContext funcDefine() throws RecognitionException {
+		FuncDefineContext _localctx = new FuncDefineContext(_ctx, getState());
+		enterRule(_localctx, 10, RULE_funcDefine);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(64);
-			((FuncDeclareContext)_localctx).type = match(IDENT);
+			((FuncDefineContext)_localctx).type = match(IDENT);
 			setState(65);
-			((FuncDeclareContext)_localctx).name = match(IDENT);
+			((FuncDefineContext)_localctx).name = match(IDENT);
 			setState(66);
 			match(T__2);
 			setState(75);
@@ -543,8 +547,8 @@ public class GrammarParser extends Parser {
 			if (_la==IDENT) {
 				{
 				setState(67);
-				((FuncDeclareContext)_localctx).varDeclare = varDeclare();
-				((FuncDeclareContext)_localctx).args.add(((FuncDeclareContext)_localctx).varDeclare);
+				((FuncDefineContext)_localctx).varDefine = varDefine();
+				((FuncDefineContext)_localctx).args.add(((FuncDefineContext)_localctx).varDefine);
 				setState(72);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
@@ -554,8 +558,8 @@ public class GrammarParser extends Parser {
 					setState(68);
 					match(T__3);
 					setState(69);
-					((FuncDeclareContext)_localctx).varDeclare = varDeclare();
-					((FuncDeclareContext)_localctx).args.add(((FuncDeclareContext)_localctx).varDeclare);
+					((FuncDefineContext)_localctx).varDefine = varDefine();
+					((FuncDefineContext)_localctx).args.add(((FuncDefineContext)_localctx).varDefine);
 					}
 					}
 					setState(74);
@@ -666,7 +670,7 @@ public class GrammarParser extends Parser {
 		return _localctx;
 	}
 
-	public static class VarDeclareContext extends ParserRuleContext {
+	public static class VarDefineContext extends ParserRuleContext {
 		public Token type;
 		public Token name;
 		public ExprContext init;
@@ -677,36 +681,36 @@ public class GrammarParser extends Parser {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
-		public VarDeclareContext(ParserRuleContext parent, int invokingState) {
+		public VarDefineContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_varDeclare; }
+		@Override public int getRuleIndex() { return RULE_varDefine; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterVarDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterVarDefine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitVarDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitVarDefine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitVarDeclare(this);
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitVarDefine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final VarDeclareContext varDeclare() throws RecognitionException {
-		VarDeclareContext _localctx = new VarDeclareContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_varDeclare);
+	public final VarDefineContext varDefine() throws RecognitionException {
+		VarDefineContext _localctx = new VarDefineContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_varDefine);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(94);
-			((VarDeclareContext)_localctx).type = match(IDENT);
+			((VarDefineContext)_localctx).type = match(IDENT);
 			setState(95);
-			((VarDeclareContext)_localctx).name = match(IDENT);
+			((VarDefineContext)_localctx).name = match(IDENT);
 			setState(98);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
@@ -715,7 +719,7 @@ public class GrammarParser extends Parser {
 				setState(96);
 				match(T__5);
 				setState(97);
-				((VarDeclareContext)_localctx).init = expr(0);
+				((VarDefineContext)_localctx).init = expr(0);
 				}
 			}
 
@@ -913,14 +917,14 @@ public class GrammarParser extends Parser {
 	}
 
 	public static class ForrContext extends ParserRuleContext {
-		public VarDeclareContext init;
+		public VarDefineContext init;
 		public ExprContext cond;
 		public StatementContext update;
 		public BlockContext block() {
 			return getRuleContext(BlockContext.class,0);
 		}
-		public VarDeclareContext varDeclare() {
-			return getRuleContext(VarDeclareContext.class,0);
+		public VarDefineContext varDefine() {
+			return getRuleContext(VarDefineContext.class,0);
 		}
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -958,7 +962,7 @@ public class GrammarParser extends Parser {
 			setState(120);
 			match(T__2);
 			setState(121);
-			((ForrContext)_localctx).init = varDeclare();
+			((ForrContext)_localctx).init = varDefine();
 			setState(122);
 			match(T__10);
 			setState(123);
@@ -984,39 +988,39 @@ public class GrammarParser extends Parser {
 		return _localctx;
 	}
 
-	public static class StructDeclareContext extends ParserRuleContext {
+	public static class StructDefineContext extends ParserRuleContext {
 		public Token name;
-		public DeclareContext declare;
-		public List<DeclareContext> declares = new ArrayList<DeclareContext>();
+		public DefineContext define;
+		public List<DefineContext> defines = new ArrayList<DefineContext>();
 		public TerminalNode IDENT() { return getToken(GrammarParser.IDENT, 0); }
-		public List<DeclareContext> declare() {
-			return getRuleContexts(DeclareContext.class);
+		public List<DefineContext> define() {
+			return getRuleContexts(DefineContext.class);
 		}
-		public DeclareContext declare(int i) {
-			return getRuleContext(DeclareContext.class,i);
+		public DefineContext define(int i) {
+			return getRuleContext(DefineContext.class,i);
 		}
-		public StructDeclareContext(ParserRuleContext parent, int invokingState) {
+		public StructDefineContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_structDeclare; }
+		@Override public int getRuleIndex() { return RULE_structDefine; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterStructDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).enterStructDefine(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitStructDeclare(this);
+			if ( listener instanceof GrammarListener ) ((GrammarListener)listener).exitStructDefine(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitStructDeclare(this);
+			if ( visitor instanceof GrammarVisitor ) return ((GrammarVisitor<? extends T>)visitor).visitStructDefine(this);
 			else return visitor.visitChildren(this);
 		}
 	}
 
-	public final StructDeclareContext structDeclare() throws RecognitionException {
-		StructDeclareContext _localctx = new StructDeclareContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_structDeclare);
+	public final StructDefineContext structDefine() throws RecognitionException {
+		StructDefineContext _localctx = new StructDefineContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_structDefine);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -1024,7 +1028,7 @@ public class GrammarParser extends Parser {
 			setState(129);
 			match(T__11);
 			setState(130);
-			((StructDeclareContext)_localctx).name = match(IDENT);
+			((StructDefineContext)_localctx).name = match(IDENT);
 			setState(131);
 			match(T__0);
 			setState(135);
@@ -1034,8 +1038,8 @@ public class GrammarParser extends Parser {
 				{
 				{
 				setState(132);
-				((StructDeclareContext)_localctx).declare = declare();
-				((StructDeclareContext)_localctx).declares.add(((StructDeclareContext)_localctx).declare);
+				((StructDefineContext)_localctx).define = define();
+				((StructDefineContext)_localctx).defines.add(((StructDefineContext)_localctx).define);
 				}
 				}
 				setState(137);

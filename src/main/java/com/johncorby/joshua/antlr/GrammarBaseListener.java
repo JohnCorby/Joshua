@@ -28,13 +28,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDeclare(GrammarParser.DeclareContext ctx) { }
+	@Override public void enterDefine(GrammarParser.DefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDeclare(GrammarParser.DeclareContext ctx) { }
+	@Override public void exitDefine(GrammarParser.DefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -76,13 +76,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterFuncDeclare(GrammarParser.FuncDeclareContext ctx) { }
+	@Override public void enterFuncDefine(GrammarParser.FuncDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitFuncDeclare(GrammarParser.FuncDeclareContext ctx) { }
+	@Override public void exitFuncDefine(GrammarParser.FuncDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -100,13 +100,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVarDeclare(GrammarParser.VarDeclareContext ctx) { }
+	@Override public void enterVarDefine(GrammarParser.VarDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVarDeclare(GrammarParser.VarDeclareContext ctx) { }
+	@Override public void exitVarDefine(GrammarParser.VarDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -160,13 +160,13 @@ public class GrammarBaseListener implements GrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStructDeclare(GrammarParser.StructDeclareContext ctx) { }
+	@Override public void enterStructDefine(GrammarParser.StructDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStructDeclare(GrammarParser.StructDeclareContext ctx) { }
+	@Override public void exitStructDefine(GrammarParser.StructDefineContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

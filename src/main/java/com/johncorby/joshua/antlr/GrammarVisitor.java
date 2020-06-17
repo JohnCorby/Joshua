@@ -17,11 +17,11 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProgram(GrammarParser.ProgramContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#declare}.
+	 * Visit a parse tree produced by {@link GrammarParser#define}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDeclare(GrammarParser.DeclareContext ctx);
+	T visitDefine(GrammarParser.DefineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#statement}.
 	 * @param ctx the parse tree
@@ -41,11 +41,11 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(GrammarParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#funcDeclare}.
+	 * Visit a parse tree produced by {@link GrammarParser#funcDefine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitFuncDeclare(GrammarParser.FuncDeclareContext ctx);
+	T visitFuncDefine(GrammarParser.FuncDefineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#funcCall}.
 	 * @param ctx the parse tree
@@ -53,11 +53,11 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFuncCall(GrammarParser.FuncCallContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#varDeclare}.
+	 * Visit a parse tree produced by {@link GrammarParser#varDefine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitVarDeclare(GrammarParser.VarDeclareContext ctx);
+	T visitVarDefine(GrammarParser.VarDefineContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link GrammarParser#varAssign}.
 	 * @param ctx the parse tree
@@ -83,11 +83,11 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitForr(GrammarParser.ForrContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#structDeclare}.
+	 * Visit a parse tree produced by {@link GrammarParser#structDefine}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStructDeclare(GrammarParser.StructDeclareContext ctx);
+	T visitStructDefine(GrammarParser.StructDefineContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

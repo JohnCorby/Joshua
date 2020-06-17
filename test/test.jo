@@ -1,3 +1,5 @@
+<<uh oh>>
+
 struct bruh {
     int hi
 
@@ -5,7 +7,7 @@ struct bruh {
         short nice
     }
 
-    void hello(int suck, byte my, ptr balls) {
+    void hello(int suck, byte my, addr balls) {
         puts("fuck you")
         printf("%i %i %i %i\n", <<sizeof(char), sizeof(short), sizeof(int), sizeof(long long)>>)
     }
