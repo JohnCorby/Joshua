@@ -19,5 +19,6 @@ fun main(args: Array<String>) {
 
     IN_PATH = args.getOrNull(0) ?: error("1 argument must be provided")
 
-    OutFile
+    // makes nicer exceptions calling a function instead of using init{}
+    OutFile.go()
 }

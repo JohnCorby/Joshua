@@ -1,5 +1,7 @@
 package com.johncorby.joshua
 
+import com.johncorby.joshua.element.Element
+
 /**
  * represents a data type
  *
@@ -14,7 +16,7 @@ package com.johncorby.joshua
  * maybe in SOME cases it can be okay (like float to int or something), but i might not even do that.
  * it might be annoying, but it will ensure that every time you wanna do something funky, you gotta be intentional
  */
-enum class Type(private val c: String) {
+enum class Type(private val c: String) : Element {
     BYTE("signed char"),
     UBYTE("unsigned char"),
     SHORT("signed short"),
@@ -32,21 +34,11 @@ enum class Type(private val c: String) {
     STRING("char*"),
     VOID("void"),
 
-    /**
-     * pointers are referred to as addresses, since they're really just stored as a number
-     *
-     *
-     *
-     * c's pointers are fine, but slightly confusing sometimes
-     * not only does the type tell you that it's a number that represents a memory address (which is all you really need to know)
-     * but it also says what type the memory at said address SHOULD be (it will be handled by the compiler as if it IS)
-     *
-     * technically, dont NEED that info and
-     */
-    ADDR("unsigned long long");
+
+    ADDR("void*");
 
 
-    override fun toString() = c
+    override fun evalImpl() = c
 }
 
 /**

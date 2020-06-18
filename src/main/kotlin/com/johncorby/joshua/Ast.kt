@@ -8,20 +8,20 @@ import com.johncorby.joshua.element.*
 import org.antlr.v4.runtime.CharStream
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
+import org.antlr.v4.runtime.tree.ErrorNode
 import org.antlr.v4.runtime.tree.ParseTree
+import org.antlr.v4.runtime.tree.TerminalNode
+
+typealias Context = ParseTree
+
+inline fun <reified T : Element> Context.visit() = Visitor.visit(this) as T
+inline fun <reified T : Element> List<Context>.visit() = map { it.visit<T>() }
 
 /**
- * simple alias for [Visitor.visit]
+ * convert this code [String] to a [Context] and then to an [Element]
  */
-inline fun <reified T : Element> ParseTree.visit() = Visitor.visit(this) as T
-inline fun <reified T : Element> List<ParseTree>.visit() = map { it.visit<T>() }
-
-
-/**
- * convert [code] to [Element] using the appropriate context gotten using [contextGetter]
- */
-inline fun <reified T : Element> parse(code: String, contextGetter: (GrammarParser) -> ParseTree): T {
-    val stream: CharStream = CharStreams.fromString(code)
+inline fun <reified T : Element> String.visit(contextGetter: (GrammarParser) -> Context): T {
+    val stream: CharStream = CharStreams.fromString(this)
     val lexer = GrammarLexer(stream)
     val tokens = CommonTokenStream(lexer)
     val parser = GrammarParser(tokens)
@@ -31,9 +31,13 @@ inline fun <reified T : Element> parse(code: String, contextGetter: (GrammarPars
 
 
 /**
- * converts antlr tree to [Element]
+ * used to convert [Context]s into [Element]s
  */
 object Visitor : GrammarBaseVisitor<Element>() {
+    override fun visitTerminal(node: TerminalNode) = error("visted terminal node ${node.toPrettyString()}")
+    override fun visitErrorNode(node: ErrorNode?) = error("visited error node ${node.toPrettyString()}")
+
+
     override fun visitProgram(ctx: ProgramContext) =
         Program(ctx.defines.visit())
 

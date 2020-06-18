@@ -1,98 +1,57 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.BinaryOp
-import com.johncorby.joshua.UnaryOp
 import com.johncorby.joshua.antlr.GrammarParser
-import com.johncorby.joshua.parse
+import com.johncorby.joshua.visit
 
 /**
  * an element tree that is higher-level than antlr's tree
  * and performs more checks
  */
 interface Element {
-    override fun toString(): String
+    val elementType get() = this::class.simpleName.toString()
+
+    fun preEval() {}
+    fun postEval() {}
+    fun eval(): String {
+        preEval()
+        val ret = evalImpl()
+        postEval()
+        return ret
+    }
+
+    /**
+     * this is the eval method to implement,
+     * but the actual [eval] is the one that should be called
+     */
+    fun evalImpl(): String
 }
 
-interface Statement : Element
-interface Expr : Element
 
 data class Program(val defines: List<Define>) : Element {
-    override fun toString() = defines
-        .joinToString("") { "$it;" }
+    override fun evalImpl() = defines
+        .joinToString("") { "${it.eval()};" }
+
+    /**
+     * unsafe for now because it also modifies [CCode] which can lead to unexpected results
+     */
+    private fun String.postProcess() = this
         .replace(";+".toRegex(), ";") // duplicate ;
         .replace("};", "}") // ; after }
         .replace("} ;", "};") // except for structs which need it
 }
 
 
-data class CCode(val code: String) : Define, Statement, Expr {
-    override fun toString() =
-        code.replace("<(.+?)>".toRegex())
-        {
-            parse<Expr>(
-                it.groupValues[1],
-                GrammarParser::expr
-            ).toString()
-        }
+/**
+ * this is an odd element.
+ * its technically every element type in order for it to be almost anywhere
+ * but in reality, it's not really any of those types.
+ */
+data class CCode(val c: String) : Define, Statement, Expr {
+    override val name = ""
 
-    override fun define() = error("cant define c code")
-    override fun undefine() = error("cant undefine c code")
-}
-
-
-data class Block(val statements: List<Statement>) :
-    Element {
-    override fun toString() = statements.joinToString("", "{", "}") { "$it;" }
-}
-
-
-data class FuncCall(val name: String, val args: List<Expr>) : Statement,
-    Expr {
-    override fun toString() = name + args.joinToString(",", "(", ")")
-}
-
-
-data class VarAssign(val name: String, val value: Expr) :
-    Statement {
-    override fun toString() = "$name=$value"
-}
-
-
-data class If(val condition: Expr, val thenBlock: Block, val elseBlock: Block? = null) :
-    Statement {
-    override fun toString() = "if($condition)$thenBlock" + elseBlock?.let { "else$it" }.orEmpty()
-}
-
-data class Until(val condition: Expr, val block: Block) :
-    Statement {
-    override fun toString() = "while(!($condition))$block"
-}
-
-data class For(val init: VarDefine, val condition: Expr, val update: Statement, val block: Block) :
-    Statement {
-    override fun toString() = "for($init;$condition;$update)$block"
-}
-
-
-data class Literal<T>(val value: T) : Expr {
-    override fun toString() = when (value) {
-        is Char -> "'$value'"
-        is String -> "\"$value\""
-        is Boolean -> if (value) "1" else "0"
-        else -> value.toString()
+    override fun evalImpl() = c.replace("<(.+?)>".toRegex()) {
+        it.groupValues[1]
+            .visit<Expr>(GrammarParser::expr)
+            .eval()
     }
-}
-
-data class Var(val name: String) : Expr {
-    override fun toString() = name
-}
-
-data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) :
-    Expr {
-    override fun toString() = "$left$operator$right"
-}
-
-data class Unary(val operand: Expr, val operator: UnaryOp) :
-    Expr {
-    override fun toString() = "$operator$operand"
 }

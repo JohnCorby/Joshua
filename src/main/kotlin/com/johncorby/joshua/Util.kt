@@ -3,7 +3,10 @@
  */
 package com.johncorby.joshua
 
-import org.antlr.v4.runtime.tree.Tree
+fun warn(message: String) = println("warning: $message")
+
+fun unsupported(what: String? = null): Nothing =
+    throw UnsupportedOperationException(what?.let { "operation unsupported: $what" })
 
 /**
  * convenient formatter for different types
@@ -19,10 +22,11 @@ fun Any?.toPrettyString(): String = when (this) {
     is CharArray -> contentToString()
     is BooleanArray -> contentToString()
 
-    is Tree -> toStringTree()
+    is Context -> toStringTree()
 
     else -> toString()
 }
+
 
 /**
  * create a [Process] and execute it with [args]

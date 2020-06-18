@@ -1,20 +1,14 @@
-<<uh oh>>
-
 struct bruh {
     int hi
 
-    struct inner {
-        short nice
-    }
-
     void hello(int suck, byte my, addr balls) {
+        printf("this = %p\n", this)
         puts("fuck you")
-        printf("%i %i %i %i\n", <<sizeof(char), sizeof(short), sizeof(int), sizeof(long long)>>)
     }
 }
 
-
+int hi
 
 void main() {
-
+    <<bruh$hello(&hi,0,0,0)>>
 }
