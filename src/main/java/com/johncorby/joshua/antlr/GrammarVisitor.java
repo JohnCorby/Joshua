@@ -29,12 +29,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStatement(GrammarParser.StatementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link GrammarParser#cCode}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCCode(GrammarParser.CCodeContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link GrammarParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -116,13 +110,6 @@ public interface GrammarVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitUnExpr(GrammarParser.UnExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code cExpr}
-	 * labeled alternative in {@link GrammarParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCExpr(GrammarParser.CExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code litExpr}
 	 * labeled alternative in {@link GrammarParser#expr}.

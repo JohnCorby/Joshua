@@ -1,7 +1,5 @@
 package com.johncorby.joshua
 
-import com.johncorby.joshua.element.Element
-
 /**
  * represents a data type
  *
@@ -16,7 +14,7 @@ import com.johncorby.joshua.element.Element
  * maybe in SOME cases it can be okay (like float to int or something), but i might not even do that.
  * it might be annoying, but it will ensure that every time you wanna do something funky, you gotta be intentional
  */
-enum class Type(private val c: String) : Element {
+enum class Type(private val c: String) {
     BYTE("signed char"),
     UBYTE("unsigned char"),
     SHORT("signed short"),
@@ -38,7 +36,7 @@ enum class Type(private val c: String) : Element {
     ADDR("void*");
 
 
-    override fun evalImpl() = c
+    fun eval() = c
 }
 
 /**

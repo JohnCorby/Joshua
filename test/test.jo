@@ -2,13 +2,20 @@ struct bruh {
     int hi
 
     void hello(int suck, byte my, addr balls) {
-        printf("this = %p\n", this)
-        puts("fuck you")
+//        <<printf("this = %p\n", this)>>
+//        <<puts("fuck you")>>
     }
 }
 
 int hi
+//int hi
+//int hi
+//int hi
 
 void main() {
-    <<bruh$hello(&hi,0,0,0)>>
+//    <<bruh$hello(&hi,0,0,0)>>
+    return "hi"
 }
+
+//void main() {
+//}

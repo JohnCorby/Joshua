@@ -1,12 +1,8 @@
-/**
- * misc utils
- */
 package com.johncorby.joshua
 
-fun warn(message: String) = println("warning: $message")
+import kotlin.reflect.KClass
 
-fun unsupported(what: String? = null): Nothing =
-    throw UnsupportedOperationException(what?.let { "operation unsupported: $what" })
+fun eprintln(message: Any?) = System.err.println(message)
 
 /**
  * convenient formatter for different types
@@ -23,6 +19,9 @@ fun Any?.toPrettyString(): String = when (this) {
     is BooleanArray -> contentToString()
 
     is Context -> toStringTree()
+
+    is Class<*> -> this.simpleName
+    is KClass<*> -> simpleName.toString()
 
     else -> toString()
 }

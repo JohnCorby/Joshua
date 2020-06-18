@@ -1,1 +1,1 @@
-struct bruh{signed int hi;} ;void bruh$hello(void* this,signed int suck,signed char my,void* balls){printf("this = %p\n",this);puts("fuck you");};signed int hi;void main(){bruh$hello(&hi,0,0,0);};
+struct bruh{signed int hi;};void bruh$hello(void* this,signed int suck,signed char my,void* balls){}signed int hi;void main(){}

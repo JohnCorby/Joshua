@@ -2,23 +2,18 @@ grammar Grammar;
 
 program: defines+=define* EOF;
 
-define: cCode
-           | varDefine
-           | funcDefine
-           | structDefine
-           ;
+define: varDefine
+      | funcDefine
+      | structDefine
+      ;
 
-statement: cCode
-         | funcCall
+statement: funcCall
          | varDefine
          | varAssign
          | iff
          | until
          | forr
          ;
-
-cCode: C_CODE;
-C_CODE: '<<' .+? '>>';
 
 block: statements+=statement | '{' statements+=statement* '}';
 
@@ -34,8 +29,7 @@ forr: 'for' '(' init=varDefine ';' cond=expr ';' update=statement ')' block;
 
 structDefine: 'struct' name=IDENT '{' defines+=define* '}' ;
 
-expr: cCode #cExpr
-    | INT_LITERAL #litExpr
+expr: INT_LITERAL #litExpr
     | FLOAT_LITERAL #litExpr
     | BOOL_LITERAL #litExpr
     | CHAR_LITERAL #litExpr
@@ -49,6 +43,7 @@ expr: cCode #cExpr
     | left=expr op=('<'|'<='|'>'|'>=') right=expr #binExpr
     | left=expr op=('=='|'!=') right=expr #binExpr
     ;
+
 
 INT_LITERAL: DIGIT+;
 FLOAT_LITERAL: DIGIT* '.' DIGIT*;

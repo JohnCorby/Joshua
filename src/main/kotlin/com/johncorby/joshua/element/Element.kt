@@ -1,22 +1,50 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.antlr.GrammarParser
-import com.johncorby.joshua.visit
+import com.johncorby.joshua.Context
+import com.johncorby.joshua.IO
+import com.johncorby.joshua.Visitor
+import com.johncorby.joshua.eprintln
+
+
+typealias FilePos = Pair<Int, Int>
+
+inline val Context.filePos get() = FilePos(start.line, start.charPositionInLine + 1)
+inline val FilePos.line get() = first
+inline val FilePos.char get() = second
+fun FilePos.print() {
+    eprintln("at $line:$char")
+    eprintln(IO.inText.lines()[line - 1])
+    eprintln(" ".repeat(char - 1) + "^")
+}
+
 
 /**
  * an element tree that is higher-level than antlr's tree
  * and performs more checks
  */
 interface Element {
-    val elementType get() = this::class.simpleName.toString()
+    val filePos: FilePos
+    fun bad(message: Any?) {
+        eprintln(message)
+        filePos.print()
+    }
+
+    fun warn(message: Any?) = bad("warning: $message")
+
+
+    val elementType: String
 
     fun preEval() {}
     fun postEval() {}
-    fun eval(): String {
+    fun eval() = try {
         preEval()
         val ret = evalImpl()
         postEval()
-        return ret
+        ret
+    } catch (e: IllegalStateException) {
+        bad("error: ${e.message}")
+        IO.errorOccurred = true
+        ""
     }
 
     /**
@@ -26,32 +54,24 @@ interface Element {
     fun evalImpl(): String
 }
 
+/**
+ * all [Element]s must also override this class,
+ * which simply contains initialized variables (since interfaces cant have those).
+ * this slightly reduces code rewriting.
+ */
+abstract class ElementImpl : Element {
+    override val elementType = this::class.simpleName.toString()
+    override val filePos = Visitor.ctx.filePos
+}
 
-data class Program(val defines: List<Define>) : Element {
+
+data class Program(val defines: List<Define>) : ElementImpl() {
     override fun evalImpl() = defines
         .joinToString("") { "${it.eval()};" }
+        .postProcess()
 
-    /**
-     * unsafe for now because it also modifies [CCode] which can lead to unexpected results
-     */
     private fun String.postProcess() = this
         .replace(";+".toRegex(), ";") // duplicate ;
         .replace("};", "}") // ; after }
         .replace("} ;", "};") // except for structs which need it
-}
-
-
-/**
- * this is an odd element.
- * its technically every element type in order for it to be almost anywhere
- * but in reality, it's not really any of those types.
- */
-data class CCode(val c: String) : Define, Statement, Expr {
-    override val name = ""
-
-    override fun evalImpl() = c.replace("<(.+?)>".toRegex()) {
-        it.groupValues[1]
-            .visit<Expr>(GrammarParser::expr)
-            .eval()
-    }
 }

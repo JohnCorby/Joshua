@@ -1,49 +1,29 @@
 package com.johncorby.joshua
 
 import com.johncorby.joshua.antlr.GrammarBaseVisitor
-import com.johncorby.joshua.antlr.GrammarLexer
-import com.johncorby.joshua.antlr.GrammarParser
 import com.johncorby.joshua.antlr.GrammarParser.*
 import com.johncorby.joshua.element.*
-import org.antlr.v4.runtime.CharStream
-import org.antlr.v4.runtime.CharStreams
-import org.antlr.v4.runtime.CommonTokenStream
-import org.antlr.v4.runtime.tree.ErrorNode
+import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.tree.ParseTree
-import org.antlr.v4.runtime.tree.TerminalNode
 
-typealias Context = ParseTree
+typealias Context = ParserRuleContext
 
 inline fun <reified T : Element> Context.visit() = Visitor.visit(this) as T
 inline fun <reified T : Element> List<Context>.visit() = map { it.visit<T>() }
 
 /**
- * convert this code [String] to a [Context] and then to an [Element]
- */
-inline fun <reified T : Element> String.visit(contextGetter: (GrammarParser) -> Context): T {
-    val stream: CharStream = CharStreams.fromString(this)
-    val lexer = GrammarLexer(stream)
-    val tokens = CommonTokenStream(lexer)
-    val parser = GrammarParser(tokens)
-    val context = contextGetter(parser)
-    return context.visit()
-}
-
-
-/**
- * used to convert [Context]s into [Element]s
+ * converts [Context]s to [Element]s
  */
 object Visitor : GrammarBaseVisitor<Element>() {
-    override fun visitTerminal(node: TerminalNode) = error("visted terminal node ${node.toPrettyString()}")
-    override fun visitErrorNode(node: ErrorNode?) = error("visited error node ${node.toPrettyString()}")
+    lateinit var ctx: Context
+    override fun visit(tree: ParseTree?): Element {
+        ctx = tree as Context
+        return super.visit(tree) ?: error("visit returned null")
+    }
 
 
     override fun visitProgram(ctx: ProgramContext) =
         Program(ctx.defines.visit())
-
-
-    override fun visitCCode(ctx: CCodeContext) =
-        CCode(ctx.text.drop(2).dropLast(2).trimIndent())
 
 
     override fun visitBlock(ctx: BlockContext) =
