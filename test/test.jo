@@ -1,11 +1,5 @@
-<<uh oh>>
-
 struct bruh {
     int hi
-
-    struct inner {
-        short nice
-    }
 
     void hello(int suck, byte my, addr balls) {
         puts("fuck you")
@@ -13,7 +7,7 @@ struct bruh {
     }
 }
 
-
+int hi
 
 void main() {
 
