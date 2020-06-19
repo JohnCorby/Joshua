@@ -8,14 +8,14 @@ struct bruh {
 }
 
 int hi
-//int hi
-//int hi
-//int hi
+int hi
+int hi
+int hi
 
 void main() {
 //    <<bruh$hello(&hi,0,0,0)>>
     return "hi"
 }
 
-//void main() {
+void okay() {
 //}

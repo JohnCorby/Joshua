@@ -7,7 +7,7 @@ data class FuncCall(val name: String, val args: List<Expr>) : ElementImpl(), Sta
         Scope[FuncDefine::class, name]
     }
 
-    override fun evalImpl() = name + args.joinToString(",", "(", ")") { it.eval() }
+    override fun evalImpl() = name + args.eval().joinToString(",", "(", ")")
 }
 
 data class VarAssign(val name: String, val value: Expr) : ElementImpl(), Statement {
@@ -19,22 +19,22 @@ data class VarAssign(val name: String, val value: Expr) : ElementImpl(), Stateme
 }
 
 
-data class Block(val statements: List<Statement>) : ElementImpl(), Element {
-    override fun evalImpl() = statements.joinToString("", "{", "}") { "${it.eval()};" }
-}
+typealias Block = List<Statement>
+
+fun Block.blockEval() = eval().joinToString("", "{", "}") { "$it;" }
 
 
 data class If(val condition: Expr, val thenBlock: Block, val elseBlock: Block? = null) :
     ElementImpl(), Statement, Scoped {
-    override fun evalImpl() = "if(${condition.eval()})${thenBlock.eval()}" +
-            elseBlock?.let { "else${it.eval()}" }.orEmpty()
+    override fun evalImpl() = "if(${condition.eval()})${thenBlock.blockEval()}" +
+            elseBlock?.let { "else${it.blockEval()}" }.orEmpty()
 }
 
 data class Until(val condition: Expr, val block: Block) : ElementImpl(), Statement, Scoped {
-    override fun evalImpl() = "while(!(${condition.eval()}))${block.eval()}"
+    override fun evalImpl() = "while(!(${condition.eval()}))${block.blockEval()}"
 }
 
 data class For(val init: VarDefine, val condition: Expr, val update: Statement, val block: Block) :
     ElementImpl(), Statement, Scoped {
-    override fun evalImpl() = "for(${init.eval()};${condition.eval()};${update.eval()})${block.eval()}"
+    override fun evalImpl() = "for(${init.eval()};${condition.eval()};${update.eval()})${block.blockEval()}"
 }

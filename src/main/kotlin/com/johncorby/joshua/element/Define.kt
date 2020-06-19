@@ -29,8 +29,8 @@ data class FuncDefine(
     }
 
     override fun evalImpl() = "${type.eval()} $name" +
-            args.joinToString(",", "(", ")") { it.eval() } +
-            block.eval()
+            args.eval().joinToString(",", "(", ")") +
+            block.blockEval()
 }
 
 
@@ -77,6 +77,6 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
     }
 
     override fun evalImpl() = "struct $name" +
-            vars.joinToString("", "{", "} ;") { "${it.eval()};" } +
-            funcs.joinToString("") { it.eval() }
+            "${vars.blockEval()} ;" +
+            funcs.eval().joinToString("")
 }

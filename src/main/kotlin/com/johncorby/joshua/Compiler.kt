@@ -11,18 +11,16 @@ import kotlin.system.exitProcess
 /**
  * handles input and output files/text
  */
-object IO {
-    lateinit var inpath: String
+object Compiler {
+    lateinit var inPath: String
     lateinit var inText: String
 
     lateinit var outPath: String
     lateinit var outText: String
 
-    var errorOccurred = false
-
     fun go(inPath: String) {
-        inpath = inPath
-        outPath = this.inpath.changeExt("c")
+        this.inPath = inPath
+        outPath = inPath.changeExt("c")
 
         transform()
         compile()
@@ -32,16 +30,17 @@ object IO {
      * transform input code into c code and write it to a file
      */
     private fun transform() {
-        inText = File(inpath).readText()
+        inText = File(inPath).readText()
 
         val stream = CharStreams.fromString(inText)
         val lexer = GrammarLexer(stream)
         val tokens = CommonTokenStream(lexer)
         val parser = GrammarParser(tokens)
         val context = parser.program()
+
         val element = context.visit<Program>()
-        outText = element.eval()
-        if (errorOccurred) exitProcess(1)
+        outText = element?.eval().orEmpty()
+        failIfQueued()
 
         File(outPath).writeText(outText)
     }
@@ -50,7 +49,20 @@ object IO {
      * compile the c program into an executable
      */
     private fun compile() {
-        errorOccurred = doCommand("make.bat", outPath) != 0
-        if (errorOccurred) exitProcess(1)
+        if (doCommand("make.bat", outPath) != 0) fail()
+    }
+
+
+    private var failQueued = false
+    fun queueFail() {
+        failQueued = true
+    }
+
+    private fun failIfQueued() {
+        if (failQueued) fail()
+    }
+
+    private fun fail() {
+        exitProcess(1)
     }
 }

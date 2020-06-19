@@ -32,7 +32,6 @@ enum class Type(private val c: String) {
     STRING("char*"),
     VOID("void"),
 
-
     ADDR("void*");
 
 
