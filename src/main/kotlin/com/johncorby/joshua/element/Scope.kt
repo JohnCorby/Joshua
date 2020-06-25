@@ -44,12 +44,12 @@ object Scope {
             val defines = scope[currentLevel]!!
 
             val define = defines[name] ?: continue
-            check(type.isInstance(define)) { "expected $name to be ${type.simpleName}, but got ${define.elementType}" }
+            check(type.isInstance(define)) { "expected $name to be ${type.elementType}, but got ${define.elementType}" }
             @Suppress("UNCHECKED_CAST")
             return define as T
         }
 
-        error("${type.simpleName} $name doesnt exist in any scope")
+        error("${type.elementType} $name doesnt exist in any scope")
     }
 
     inline operator fun <reified T : Define> get(name: String) = get(T::class, name)

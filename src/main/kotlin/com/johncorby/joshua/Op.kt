@@ -1,3 +1,6 @@
+/**
+ * todo eventually, make these Elements (pass 2) so we can have custom ops
+ */
 package com.johncorby.joshua
 
 enum class BinaryOp(val op: String, private val c: String = op) {

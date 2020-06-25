@@ -1,21 +1,9 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.Compiler
 import com.johncorby.joshua.Context
-import com.johncorby.joshua.Visitor
-import com.johncorby.joshua.eprintln
-
-
-typealias FilePos = Pair<Int, Int>
-
-inline val Context.filePos get() = FilePos(start.line, start.charPositionInLine + 1)
-inline val FilePos.line get() = first
-inline val FilePos.char get() = second
-fun FilePos.print() {
-    eprintln("at $line:$char")
-    eprintln(Compiler.inText.lines()[line - 1])
-    eprintln(" ".repeat(char - 1) + "^")
-}
+import com.johncorby.joshua.ProblemInfo
+import com.johncorby.joshua.mapCatching
+import kotlin.reflect.KClass
 
 
 /**
@@ -26,32 +14,22 @@ fun FilePos.print() {
  * the 2nd pass
  */
 interface Element {
-    val filePos: FilePos
-    fun warn(message: Any?) {
-        eprintln("warning: $message")
-        filePos.print()
-    }
-
-
-    val elementType get() = this::class.simpleName.toString()
+    val elementType get() = this::class.elementType
+    val ctx: Context
 
     fun preEval() {}
     fun postEval() {}
-    fun eval() = runCatching {
+    fun eval(): String {
+        ProblemInfo.ctx = ctx
         preEval()
         val ret = evalImpl()
         postEval()
-        ret
-    }.getOrElse {
-        eprintln("error: ${it.message}")
-        filePos.print()
-        Compiler.queueFail()
-        null
+        return ret
     }
 
     /**
      * this is the eval method to implement,
-     * but the actual [blockEval] is the one that should be called
+     * but the actual [eval] is the one that should be called
      */
     fun evalImpl(): String
 }
@@ -62,12 +40,11 @@ interface Element {
  * this slightly reduces code rewriting.
  */
 abstract class ElementImpl : Element {
-    override val filePos = Visitor.ctx.filePos
+    override val ctx = ProblemInfo.ctx
 }
 
-fun List<Element>.eval() = mapNotNull { it.eval() }
-
-
+inline val KClass<out Element>.elementType get() = simpleName.toString()
+fun List<Element>.eval() = mapCatching { it.eval() }
 
 
 data class Program(val defines: List<Define>) : ElementImpl() {

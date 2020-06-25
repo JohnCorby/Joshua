@@ -2,8 +2,6 @@ package com.johncorby.joshua
 
 import kotlin.reflect.KClass
 
-fun eprintln(message: Any?) = System.err.println(message)
-
 /**
  * convenient formatter for different types
  */
@@ -52,5 +50,19 @@ class UniqueList<E> : AbstractMutableList<E>() {
     override fun get(index: Int) = list[index]
     override fun set(index: Int, element: E) = list[index].also {
         if (element !in list) list[index] = element
+    }
+}
+
+/**
+ * [MutableMap] has stores multiple values per key
+ */
+class MultiMap<K, V> : AbstractMutableMap<K, MutableList<V>>() {
+    private val map = mutableMapOf<K, MutableList<V>>()
+    override val entries get() = map.entries
+    override fun put(key: K, value: MutableList<V>) = map.put(key, value)
+    override fun get(key: K) = map.getOrElse(key) {
+        val new = mutableListOf<V>()
+        map[key] = new
+        new
     }
 }

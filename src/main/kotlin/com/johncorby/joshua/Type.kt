@@ -13,6 +13,8 @@ package com.johncorby.joshua
  * or that you want something flimsy for it to actually work. otherwise, it wont let you
  * maybe in SOME cases it can be okay (like float to int or something), but i might not even do that.
  * it might be annoying, but it will ensure that every time you wanna do something funky, you gotta be intentional
+ *
+ * todo eventually, make this Element (pass 2) so we can have custom types
  */
 enum class Type(private val c: String) {
     BYTE("signed char"),
