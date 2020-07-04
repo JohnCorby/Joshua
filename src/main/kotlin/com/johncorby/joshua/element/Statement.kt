@@ -5,16 +5,12 @@ import com.johncorby.joshua.Type
 interface Statement : Element
 
 data class FuncCall(val name: String, val args: List<Expr>) : ElementImpl(), Statement, Expr {
+    override lateinit var type: Type
     override fun preEval() {
-        Scope[FuncDefine::class, name]
+        type = Scope[FuncDefine::class, name].type
     }
 
     override fun evalImpl() = name + args.eval().joinToString(",", "(", ")")
-
-    override lateinit var type: Type
-    override fun postEval() {
-        type = Scope[FuncDefine::class, name].type
-    }
 }
 
 data class VarAssign(val name: String, val value: Expr) : ElementImpl(), Statement {
