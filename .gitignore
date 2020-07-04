@@ -1,5 +1,5 @@
 # Project exclude paths
 /.gradle/
 /build/
-/temp/
 /old/
+/src/main/java/
