@@ -1,5 +1,7 @@
 package com.johncorby.joshua.element
 
+import com.johncorby.joshua.className
+import com.johncorby.joshua.name
 import kotlin.reflect.KClass
 
 /**
@@ -34,7 +36,7 @@ object Scope {
     fun add(define: Define) {
         val defines = scope[level]!!
 
-        defines[define.name]?.run { error("$name already exists in this scope as $elementType") }
+        defines[define.name]?.run { error("$name already exists in this scope as $className") }
 
         defines[define.name] = define
     }
@@ -44,12 +46,12 @@ object Scope {
             val defines = scope[currentLevel]!!
 
             val define = defines[name] ?: continue
-            check(type.isInstance(define)) { "expected $name to be ${type.elementType}, but got ${define.elementType}" }
+            check(type.isInstance(define)) { "expected $name to be ${type.name}, but got ${define.className}" }
             @Suppress("UNCHECKED_CAST")
             return define as T
         }
 
-        error("${type.elementType} $name doesnt exist in any scope")
+        error("${type.name} $name doesnt exist in any scope")
     }
 
     inline operator fun <reified T : Define> get(name: String) = get(T::class, name)

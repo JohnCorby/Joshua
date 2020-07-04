@@ -36,7 +36,11 @@ data class FuncDefine(
 
 data class VarDefine(val type: Type, override val name: String, val init: Expr? = null) :
     ElementImpl(), Define, Statement {
-    override fun preEval() = Scope.add(this)
+    override fun preEval() {
+        check(type != Type.VOID) { "vars cant be void type" }
+
+        Scope.add(this)
+    }
 
     override fun evalImpl() = "${type.eval()} $name" + init?.eval()?.let { "=$it" }.orEmpty()
 }
@@ -64,7 +68,7 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
                 is FuncDefine -> funcs += it.copy(
                     type = it.type,
                     name = "$name$${it.name}",
-                    args = listOf(VarDefine(Type.ADDR, "this")) + it.args,
+                    args = it.args.toMutableList().apply { add(VarDefine(Type.ADDR, "this")) },
                     block = it.block
                 )
                 else -> error("structs can only contain vars and funcs")

@@ -16,31 +16,33 @@ package com.johncorby.joshua
  *
  * todo eventually, make this Element (pass 2) so we can have custom types
  */
-enum class Type(private val c: String) {
-    BYTE("signed char"),
-    UBYTE("unsigned char"),
-    SHORT("signed short"),
-    USHORT("unsigned short"),
-    INT("signed int"),
-    UINT("unsigned int"),
-    LONG("signed long long"),
-    ULONG("unsigned long long"),
+enum class Type(private val c: String, val size: Int) {
+    BYTE("signed char", 1),
+    UBYTE("unsigned char", 1),
+    SHORT("signed short", 2),
+    USHORT("unsigned short", 2),
+    INT("signed int", 4),
+    UINT("unsigned int", 4),
+    LONG("signed long long", 8),
+    ULONG("unsigned long long", 8),
 
-    FLOAT("signed float"),
-    DOUBLE("signed double"),
+    FLOAT("signed float", 4),
+    DOUBLE("signed double", 8),
 
-    BOOL("int"),
-    CHAR("char"),
-    STRING("char*"),
-    VOID("void"),
+    BOOL("signed char", 1),
+    CHAR("char", 1),
+    STRING("char*", -1),
+    VOID("void", -1),
 
-    ADDR("void*");
+    ADDR("void*", 8);
 
-
+    override fun toString() = name.toLowerCase()
     fun eval() = c
+
+    fun isNumber() = equals(BYTE, UBYTE, SHORT, USHORT, INT, UINT, LONG, ULONG)
 }
 
 /**
  * tries to convert this [String] to [Type]
  */
-fun String.toType() = Type.values().find { this == it.name.toLowerCase() } ?: error("type $this doesnt exist")
+fun String.toType() = Type.values().find { this == it.toString() } ?: error("type $this doesnt exist")

@@ -1,3 +1,5 @@
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.johncorby.joshua
 
 import kotlin.reflect.KClass
@@ -24,16 +26,23 @@ fun Any?.toPrettyString(): String = when (this) {
     else -> toString()
 }
 
+inline val KClass<*>.name get() = simpleName.toString()
+inline val Any.className get() = this::class.name
 
 /**
  * create a [Process] and execute it with [args]
  */
-fun doCommand(vararg args: String) = ProcessBuilder(*args).inheritIO().start().waitFor()
+inline fun doCommand(vararg args: String) = ProcessBuilder(*args).inheritIO().start().waitFor()
 
 /**
  * change extension of file name
  */
-fun String.changeExt(ext: String) = replaceAfter('.', ext)
+inline fun String.changeExt(ext: String) = replaceAfter('.', ext)
+
+/**
+ * check if [this] equals any of the [values]
+ */
+inline fun Any?.equals(vararg values: Any?) = values.any { this == it }
 
 
 /**

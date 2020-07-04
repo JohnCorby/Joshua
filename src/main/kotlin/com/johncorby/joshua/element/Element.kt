@@ -3,7 +3,6 @@ package com.johncorby.joshua.element
 import com.johncorby.joshua.Context
 import com.johncorby.joshua.FilePos
 import com.johncorby.joshua.mapCatching
-import kotlin.reflect.KClass
 
 
 /**
@@ -14,7 +13,6 @@ import kotlin.reflect.KClass
  * the 2nd pass
  */
 interface Element {
-    val elementType get() = this::class.elementType
     val ctx: Context
 
     fun preEval() {}
@@ -43,7 +41,6 @@ abstract class ElementImpl : Element {
     override val ctx = FilePos.ctx
 }
 
-inline val KClass<out Element>.elementType get() = simpleName.toString()
 fun List<Element>.eval() = mapCatching { it.eval() }
 
 

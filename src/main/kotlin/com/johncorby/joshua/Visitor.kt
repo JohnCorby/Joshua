@@ -42,6 +42,7 @@ object Visitor : GrammarBaseVisitor<Element>() {
     )
 
     override fun visitVarAssign(ctx: VarAssignContext) = VarAssign(ctx.name.text, ctx.value.visit())
+    override fun visitStructDefine(ctx: StructDefineContext) = StructDefine(ctx.name.text, ctx.defines.visit())
     override fun visitIff(ctx: IffContext) = If(
         ctx.cond.visit(),
         ctx.thenBlock.visit(),
@@ -56,19 +57,15 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.block().visit()
     )
 
-    override fun visitStructDefine(ctx: StructDefineContext) =
-        StructDefine(ctx.name.text, ctx.defines.visit())
-
-    override fun visitLitExpr(ctx: LitExprContext) = Literal(
-        when {
-            ctx.INT_LITERAL() != null -> ctx.text.toInt()
-            ctx.FLOAT_LITERAL() != null -> ctx.text.toFloat()
-            ctx.BOOL_LITERAL() != null -> ctx.text.toBoolean()
-            ctx.CHAR_LITERAL() != null -> ctx.text[1]
-            ctx.STR_LITERAL() != null -> ctx.text.drop(1).dropLast(1)
-            else -> error("invalid literal ${ctx.text}")
-        }
-    )
+    override fun visitRet(ctx: RetContext) = Ret(ctx.value.visit())
+    override fun visitLitExpr(ctx: LitExprContext) = when {
+        ctx.INT_LITERAL() != null -> Literal(ctx.text.toInt())
+        ctx.FLOAT_LITERAL() != null -> Literal(ctx.text.toFloat())
+        ctx.BOOL_LITERAL() != null -> Literal(ctx.text.toBoolean())
+        ctx.CHAR_LITERAL() != null -> Literal(ctx.text[1])
+        ctx.STR_LITERAL() != null -> Literal(ctx.text.drop(1).dropLast(1))
+        else -> error("invalid literal ${ctx.text}")
+    }
 
     override fun visitVarExpr(ctx: VarExprContext) = Var(ctx.text)
     override fun visitUnExpr(ctx: UnExprContext) = Unary(ctx.expr().visit(), ctx.op.text.toUnaryOp())
