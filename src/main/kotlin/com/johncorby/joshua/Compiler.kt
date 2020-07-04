@@ -38,9 +38,7 @@ object Compiler {
         val parser = GrammarParser(tokens)
         val context = parser.program()
 
-        ProblemInfo.pass = 1
         val element = context.visit<Program>()
-        ProblemInfo.pass = 2
         outText = element.eval()
         failIfQueued()
 

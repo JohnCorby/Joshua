@@ -22,7 +22,7 @@ fun BlockContext.visit() = statements.visit<Statement>()
  */
 object Visitor : GrammarBaseVisitor<Element>() {
     override fun visit(tree: ParseTree): Element {
-        ProblemInfo.ctx = tree as Context
+        FilePos.ctx = tree as Context
         return super.visit(tree) ?: ignore()
     }
 

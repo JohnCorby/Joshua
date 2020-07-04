@@ -1,7 +1,7 @@
 package com.johncorby.joshua.element
 
 import com.johncorby.joshua.Context
-import com.johncorby.joshua.ProblemInfo
+import com.johncorby.joshua.FilePos
 import com.johncorby.joshua.mapCatching
 import kotlin.reflect.KClass
 
@@ -20,7 +20,7 @@ interface Element {
     fun preEval() {}
     fun postEval() {}
     fun eval(): String {
-        ProblemInfo.ctx = ctx
+        FilePos.ctx = ctx
         preEval()
         val ret = evalImpl()
         postEval()
@@ -40,7 +40,7 @@ interface Element {
  * this slightly reduces code rewriting.
  */
 abstract class ElementImpl : Element {
-    override val ctx = ProblemInfo.ctx
+    override val ctx = FilePos.ctx
 }
 
 inline val KClass<out Element>.elementType get() = simpleName.toString()
