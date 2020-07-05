@@ -15,11 +15,11 @@ interface Expr : Element {
      * meaning it might be a conversion or it might not be.
      * todo we should probably be in more control of this later
      */
-    var type: Type?
+    var type: Type
 }
 
 abstract class ExprImpl : ElementImpl(), Expr {
-    override var type: Type? = null
+    override lateinit var type: Type
 }
 
 inline val Expr?.type get() = this?.type ?: Type.VOID
@@ -27,17 +27,17 @@ inline val Expr?.type get() = this?.type ?: Type.VOID
 
 data class Var(val name: String) : ExprImpl() {
     override fun preEval() {
-        if (type == null) type = Scope.get<VarDefine>(name).type
+        type = Scope.get<VarDefine>(name).type
     }
 
-    override fun evalImpl() = "(${type!!.eval()})(" +
+    override fun evalImpl() = "(${type.eval()})(" +
             name +
             ")"
 }
 
 data class Literal<T : Any>(val value: T) : ExprImpl() {
     override fun preEval() {
-        if (type == null) type = when (value) {
+        type = when (value) {
             is Int -> Type.INT
             is Float -> Type.FLOAT
             is Boolean -> Type.BOOL
@@ -47,7 +47,7 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
         }
     }
 
-    override fun evalImpl() = "(${type!!.eval()})(" +
+    override fun evalImpl() = "(${type.eval()})(" +
             when (value) {
                 is Char -> "'$value'"
                 is String -> "\"$value\""
@@ -59,19 +59,14 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
 
 
 data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ExprImpl() {
-    init {
-        left.parent = this
-        right.parent = this
-    }
-
     override fun evalImpl(): String {
         val leftEval = left.eval()
         val rightEval = right.eval()
 
-        operator.check(left.type!!, right.type!!)
-        if (type == null) type = left.type
+        operator.check(left.type, right.type)
+        type = left.type
 
-        return "(${type!!.eval()})(" +
+        return "(${type.eval()})(" +
                 leftEval +
                 operator.eval() +
                 rightEval +
@@ -80,17 +75,13 @@ data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : Exp
 }
 
 data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl() {
-    init {
-        operand.parent = this
-    }
-
     override fun evalImpl(): String {
         val operandEval = operand.eval()
 
-        operator.check(operand.type!!)
-        if (type == null) type = operand.type
+        operator.check(operand.type)
+        type = operand.type
 
-        return "(${type!!.eval()})(" +
+        return "(${type.eval()})(" +
                 operator.eval() +
                 operandEval +
                 ")"

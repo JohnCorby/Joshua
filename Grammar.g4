@@ -43,7 +43,7 @@ expr: INT_LITERAL #litExpr
     | IDENT #varExpr
     | funcCall #funcExpr
     | '(' expr ')' #parenExpr
-    | <assoc=right> 'cast' '(' type=IDENT ')' expr #castExpr
+    | <assoc=right> expr 'as' type=IDENT #castExpr
     | <assoc=right> op=('-'|'!') expr #unExpr
     | left=expr op=('*'|'/'|'%') right=expr #binExpr
     | left=expr op=('+'|'-') right=expr #binExpr

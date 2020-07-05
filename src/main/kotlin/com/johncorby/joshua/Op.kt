@@ -26,7 +26,7 @@ enum class BinaryOp(private val c: String) {
     private fun takesNums() = equals(MUL, DIV, MOD, ADD, SUB, LT, LTE, GT, GTE)
     private fun takesNumsOrBools() = equals(EQ, NEQ)
     fun check(left: Type, right: Type) {
-        check(left == right) { "types $left and $right are different" }
+        checkTypes("left", left, "right", right)
 
         when {
             takesNums() -> check(left.isNum() && right.isNum())

@@ -26,8 +26,8 @@ enum class Type(private val c: String, val size: Int) {
     LONG("signed long long", 8),
     ULONG("unsigned long long", 8),
 
-    FLOAT("signed float", 4),
-    DOUBLE("signed double", 8),
+    FLOAT("float", 4),
+    DOUBLE("double", 8),
 
     BOOL("signed char", 1),
     CHAR("char", 1),
@@ -50,5 +50,15 @@ enum class Type(private val c: String, val size: Int) {
 fun String.toType() = Type.values().find { this == it.toString() } ?: error("type $this doesnt exist")
 
 
+/**
+ * helper interface to remind me to check types
+ */
+interface TypeChecked {
+   fun checkTypes()
+}
+
+/**
+ * check that 2 types are equal
+ */
 fun checkTypes(firstName: String, first: Type, secondName: String, second: Type) =
     check(first == second) { "$firstName type $first doesnt match $secondName type $second" }

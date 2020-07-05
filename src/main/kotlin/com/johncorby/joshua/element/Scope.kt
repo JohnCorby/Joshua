@@ -31,7 +31,7 @@ object Scope {
     fun add(define: Define) {
         val defMap = scope[level]
 
-        defMap[define.name]?.run { error("$this already exists in this scope as $className") }
+        defMap[define.name]?.run { error("${define.name} already exists in this scope as $className") }
 
         defMap[define.name] = define
     }

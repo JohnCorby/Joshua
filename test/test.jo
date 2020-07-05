@@ -9,6 +9,7 @@ struct bruh {
 
 int main() {
 //    <<bruh$hello(&hi,0,0,0)>>
-    float i = cast(float)1
-    return i
+    float i = 1 as float
+    int e = 1 + i as int + 2
+    return -i as int
 }

@@ -20,12 +20,13 @@ data class FuncDefine(
     val args: List<VarDefine>,
     val block: Block
 ) : ElementImpl(), Define, Scoped {
-    init {
-        args.parent = this
-        block.parent = this
+    companion object {
+        lateinit var current: FuncDefine
     }
 
     override fun preEval() {
+        current = this
+
         // todo remove this later when we implement this
         check(args.all { it.init == null }) { "func args cant be initialized" }
 
@@ -42,10 +43,6 @@ data class FuncDefine(
 
 data class VarDefine(val type: Type, override val name: String, val init: Expr? = null) :
     ElementImpl(), Define, Statement {
-    init {
-        init?.parent = this
-    }
-
     override fun preEval() {
         check(type != Type.VOID) { "vars cant be void type" }
 
@@ -56,7 +53,7 @@ data class VarDefine(val type: Type, override val name: String, val init: Expr? 
         val initEval = init?.eval()
 
         if (init?.type != null)
-            checkTypes("init", init.type!!, "var", type)
+            checkTypes("init", init.type, "var", type)
 
         return "${type.eval()} $name" + initEval?.let { "=$it" }.orEmpty()
     }
@@ -72,10 +69,6 @@ data class VarDefine(val type: Type, override val name: String, val init: Expr? 
  * todo scoping isnt the right thing to do here, things will break
  */
 data class StructDefine(override val name: String, val defines: List<Define>) : ElementImpl(), Define, Scoped {
-    init {
-        defines.parent = this
-    }
-
     private val vars = mutableListOf<VarDefine>()
     private val funcs = mutableListOf<FuncDefine>()
 
