@@ -13,7 +13,7 @@ data class FuncCall(val name: String, val args: List<Expr>) : ExprImpl(), Statem
     private lateinit var define: FuncDefine
     override fun preEval() {
         define = Scope[name]
-        type = define.type
+        if (type == null) type = define.type
     }
 
     override fun evalImpl(): String {
@@ -24,7 +24,7 @@ data class FuncCall(val name: String, val args: List<Expr>) : ExprImpl(), Statem
         // todo maybe add more detail?????? maybe not idk
         check(defTypes == ourTypes) { "call arg types $ourTypes doesnt match func arg types $defTypes" }
 
-        return "(${type.eval()})(" +
+        return "(${type!!.eval()})(" +
                 name + argsEval.joinToString(",", "(", ")") +
                 ")"
     }
@@ -36,13 +36,14 @@ data class VarAssign(val name: String, val value: Expr) : ExprImpl(), Statement 
     }
 
     override fun preEval() {
-        type = Scope.get<VarDefine>(name).type
+        val define: FuncDefine = Scope[name]
+        if (type == null) type = define.type
     }
 
     override fun evalImpl(): String {
         val valueEval = value.eval()
 
-        checkTypes("value", value.type, "var", type)
+        checkTypes("value", value.type!!, "var", type!!)
 
         return "$name=$valueEval"
     }
@@ -66,7 +67,7 @@ abstract class ControlStatement : ElementImpl(), Statement, Scoped {
     }
 
     override fun preEval() {
-        check(condition.type.isBool()) { "$className condition must be bool (got ${condition.type}" }
+        check(condition.type!!.isBool()) { "$className condition must be bool (got ${condition.type}" }
 
         super<Scoped>.preEval()
     }
@@ -119,6 +120,6 @@ data class Ret(val value: Expr? = null) : ElementImpl(), Statement {
         // then check its type
         checkTypes("return", value.type, "func", define.type)
 
-        return "return" + valueEval.orEmpty() + ";"
+        return "return" + valueEval.orEmpty()
     }
 }

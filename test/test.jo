@@ -9,6 +9,6 @@ struct bruh {
 
 int main() {
 //    <<bruh$hello(&hi,0,0,0)>>
-    float i = 1
+    float i = cast(float)1
     return i
 }

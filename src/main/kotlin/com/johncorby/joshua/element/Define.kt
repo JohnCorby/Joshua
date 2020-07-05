@@ -56,7 +56,7 @@ data class VarDefine(val type: Type, override val name: String, val init: Expr? 
         val initEval = init?.eval()
 
         if (init?.type != null)
-            checkTypes("init", init.type, "var", type)
+            checkTypes("init", init.type!!, "var", type)
 
         return "${type.eval()} $name" + initEval?.let { "=$it" }.orEmpty()
     }
