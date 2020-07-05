@@ -1,14 +1,14 @@
-//struct bruh {
-//    int hi
-//
-//    void hello(int suck, byte my, addr balls) {
-////        <<printf("this = %p\n", this)>>
-////        <<puts("fuck you")>>
-//    }
-//}
+struct bruh {
+    int hi
 
-void main() {
+    void hello(int suck, byte my, addr balls) {
+//        <<printf("this = %p\n", this)>>
+//        <<puts("fuck you")>>
+    }
+}
+
+int main() {
 //    <<bruh$hello(&hi,0,0,0)>>
-    int i = 1
-    return 1+i*2+true
+    float i = 1
+    return i
 }

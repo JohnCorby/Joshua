@@ -13,45 +13,40 @@ object Scope {
      * map of scope level to defines
      * defines are also mapped to their names for hopefully faster access
      */
-    private val scope = mutableMapOf<Int, MutableMap<String, Define>>()
-    private var level = 0
-
-    init {
-        scope[0] = mutableMapOf()
-    }
+    private val scope = mutableListOf(mutableMapOf<String, Define>())
+    private inline val level get() = scope.lastIndex
 
     fun create() {
-        level++
-        scope[level] = mutableMapOf()
+        scope += mutableMapOf()
     }
 
     fun destroy() {
         check(level > 0) { "cant destroy top level scope" }
 
-        scope.remove(level)!!.values.forEach { it.undefine() }
-        level--
+        val defMap = scope.removeAt(level)
+        defMap.values.forEach { it.undefine() }
     }
 
 
     fun add(define: Define) {
-        val defines = scope[level]!!
+        val defMap = scope[level]
 
-        defines[define.name]?.run { error("$name already exists in this scope as $className") }
+        defMap[define.name]?.run { error("$this already exists in this scope as $className") }
 
-        defines[define.name] = define
+        defMap[define.name] = define
     }
 
-    operator fun <T : Define> get(type: KClass<T>, name: String): T {
+    operator fun <T : Define> get(clazz: KClass<T>, name: String): T {
         for (currentLevel in level downTo 0) {
-            val defines = scope[currentLevel]!!
+            val defMap = scope[currentLevel]
 
-            val define = defines[name] ?: continue
-            check(type.isInstance(define)) { "expected $name to be ${type.name}, but got ${define.className}" }
+            val define = defMap[name] ?: continue
+            check(clazz.isInstance(define)) { "expected $name to be ${clazz.name}, but got ${define.className}" }
             @Suppress("UNCHECKED_CAST")
             return define as T
         }
 
-        error("${type.name} $name doesnt exist in any scope")
+        error("${clazz.name} $name doesnt exist in any scope")
     }
 
     inline operator fun <reified T : Define> get(name: String) = get(T::class, name)
@@ -59,7 +54,7 @@ object Scope {
 
 
 /**
- * a function that creates and then destroys a scope
+ * an [Element] that creates and then destroys a scope
  */
 interface Scoped : Element {
     override fun preEval() = Scope.create()

@@ -1,7 +1,5 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.Type
-
 /**
  * a top-level element
  * usually tracked
@@ -19,6 +17,11 @@ data class FuncDefine(
     val args: List<VarDefine>,
     val block: Block
 ) : ElementImpl(), Define, Scoped {
+    init {
+        args.parent = this
+        block.parent = this
+    }
+
     override fun preEval() {
         // todo remove this later when we implement this
         check(args.all { it.init == null }) { "func args cant be initialized" }
@@ -36,8 +39,13 @@ data class FuncDefine(
 
 data class VarDefine(val type: Type, override val name: String, val init: Expr? = null) :
     ElementImpl(), Define, Statement {
+    init {
+        init?.parent = this
+    }
+
     override fun preEval() {
         check(type != Type.VOID) { "vars cant be void type" }
+        // todo check init type
 
         Scope.add(this)
     }
@@ -55,6 +63,10 @@ data class VarDefine(val type: Type, override val name: String, val init: Expr? 
  * todo scoping isnt the right thing to do here, things will break
  */
 data class StructDefine(override val name: String, val defines: List<Define>) : ElementImpl(), Define, Scoped {
+    init {
+        defines.parent = this
+    }
+
     private val vars = mutableListOf<VarDefine>()
     private val funcs = mutableListOf<FuncDefine>()
 
@@ -68,10 +80,10 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
                 is FuncDefine -> funcs += it.copy(
                     type = it.type,
                     name = "$name$${it.name}",
-                    args = it.args.toMutableList().apply { add(VarDefine(Type.ADDR, "this")) },
+                    args = listOf(VarDefine(Type.ADDR, "this")) + it.args,
                     block = it.block
                 )
-                else -> error("structs can only contain vars and funcs")
+                else -> error("structs can only contain vars and funcs (got $it)")
             }
         }
 

@@ -1,1 +1,1 @@
-void main(){signed int i=1;}
+struct bruh{signed int hi;};void bruh$hello(void* this,signed int suck,signed char my,void* balls){}void main(){signed int i=1;return;}

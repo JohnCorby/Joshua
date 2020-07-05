@@ -1,7 +1,6 @@
 package com.johncorby.joshua.element
 
 import com.johncorby.joshua.BinaryOp
-import com.johncorby.joshua.Type
 import com.johncorby.joshua.UnaryOp
 import com.johncorby.joshua.className
 
@@ -13,17 +12,20 @@ interface Expr : Element {
     val type: Type
 }
 
-data class Var(val name: String) : ElementImpl(), Expr {
+abstract class ExprImpl : ElementImpl(), Expr {
     override lateinit var type: Type
+}
+
+
+data class Var(val name: String) : ExprImpl() {
     override fun preEval() {
-        type = Scope[VarDefine::class, name].type
+        type = Scope.get<VarDefine>(name).type
     }
 
     override fun evalImpl() = name
 }
 
-data class Literal<T : Any>(val value: T) : ElementImpl(), Expr {
-    override lateinit var type: Type
+data class Literal<T : Any>(val value: T) : ExprImpl() {
     override fun preEval() {
         type = when (value) {
             is Int -> Type.INT
@@ -43,28 +45,36 @@ data class Literal<T : Any>(val value: T) : ElementImpl(), Expr {
     }
 }
 
-data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ElementImpl(), Expr {
-    override lateinit var type: Type
+
+data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ExprImpl() {
+    init {
+        left.parent = this
+        right.parent = this
+    }
+
     override fun evalImpl(): String {
         val leftEval = left.eval()
         val rightEval = right.eval()
 
-        with(left.type to right.type) {
-            operator.check(first, second)
-            type = if (first.size > second.size) first else second
-        }
+        operator.check(left.type, right.type)
+        // choose the largest of the 2 types
+        type = if (left.type.size > right.type.size) left.type else right.type
 
-        // promote via cast to largest of the 2 types
+        // promote to that largest type
         return "(${type.eval()})$leftEval${operator.eval()}(${type.eval()})$rightEval"
     }
 }
 
-data class Unary(val operand: Expr, val operator: UnaryOp) : ElementImpl(), Expr {
-    override lateinit var type: Type
+data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl() {
+    init {
+        operand.parent = this
+    }
 
     override fun evalImpl(): String {
         val operandEval = operand.eval()
 
+        operator.check(operand.type)
+        // simple passthrough
         type = operand.type
 
         return "${operator.eval()}$operandEval"

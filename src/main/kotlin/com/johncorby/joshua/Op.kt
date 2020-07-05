@@ -3,6 +3,8 @@
  */
 package com.johncorby.joshua
 
+import com.johncorby.joshua.element.Type
+
 enum class BinaryOp(private val op: String, private val c: String = op) {
     MUL("*"),
     DIV("/"),
@@ -27,9 +29,9 @@ enum class BinaryOp(private val op: String, private val c: String = op) {
     private fun isConditional() = equals(LT, LTE, GT, GTE, EQ, NEQ)
     fun check(left: Type, right: Type) {
         when {
-            isNumeric() -> check(left.isNumber() && right.isNumber())
+            isNumeric() -> check(left.isNum() && right.isNum())
             { "op '$this' only works for numbers (got $left and $right)" }
-            isConditional() -> check(left == Type.BOOL && right == Type.BOOL)
+            isConditional() -> check(left.isBool() && right.isBool())
             { "op '$this' only works for bools (got $left and $right)" }
         }
     }
@@ -47,9 +49,9 @@ enum class UnaryOp(private val op: String, private val c: String = op) {
     fun eval() = c
 
     fun check(type: Type) = when (this) {
-        NEGATE -> check(type.isNumber())
+        NEGATE -> check(type.isNum())
         { "op '$this' only works for numbers (got $type)" }
-        NOT -> check(type == Type.BOOL)
+        NOT -> check(type.isBool())
         { "op '$this' only works for bools (got $type)" }
     }
 }

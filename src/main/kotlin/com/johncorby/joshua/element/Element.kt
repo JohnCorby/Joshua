@@ -14,6 +14,7 @@ import com.johncorby.joshua.mapCatching
  */
 interface Element {
     val ctx: Context
+    var parent: Element
 
     fun preEval() {}
     fun postEval() {}
@@ -32,19 +33,22 @@ interface Element {
     fun evalImpl(): String
 }
 
-/**
- * all [Element]s must extend this class,
- * which simply initializes variables (since interfaces cant).
- * this slightly reduces code rewriting.
- */
 abstract class ElementImpl : Element {
     override val ctx = FilePos.ctx
+    override lateinit var parent: Element
 }
 
 fun List<Element>.eval() = mapCatching { it.eval() }
+inline var List<Element>.parent: Element
+    get() = first().parent
+    set(value) = forEach { it.parent = value }
 
 
 data class Program(val defines: List<Define>) : ElementImpl() {
+    init {
+        defines.parent = this
+    }
+
     override fun evalImpl() = defines.eval()
         .joinToString("") { "$it;" }
         .postProcess()

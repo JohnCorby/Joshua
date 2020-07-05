@@ -10,16 +10,18 @@ object FilePos {
         val line = ctx.start.line
         val char = ctx.start.charPositionInLine + 1
 
-        System.err.println("at $line:$char")
-        System.err.println(Compiler.inText.lines()[line - 1])
-        System.err.println(" ".repeat(char - 1) + "^")
+        println("at $line:$char")
+        println(Compiler.inText.lines()[line - 1])
+        println(" ".repeat(char - 1) + "^")
     }
 }
 
 
 fun warn(message: Any?) {
-    System.err.println("warning: $message")
+    print(Color.YELLOW)
+    println("warning: $message")
     FilePos.print()
+    print(Color.RESET)
 }
 
 
@@ -37,14 +39,18 @@ inline fun <T, R> Iterable<T>.mapCatching(transform: (T) -> R): List<R> {
             destination += transform(it)
         } catch (e: Ignore) {
         } catch (e: IllegalStateException) {
-            System.err.println("error: ${e.message}")
+            print(Color.RED)
+            println("error: ${e.message}")
             FilePos.print()
-            System.err.println()
+            println()
+            print(Color.RESET)
             Compiler.queueFail()
         } catch (e: Throwable) {
-            System.err.println("UNCAUGHT ERROR")
+            print(Color.RED)
+            println("UNCAUGHT ERROR")
             e.printStackTrace()
-            System.err.println()
+            println()
+            print(Color.RESET)
             Compiler.queueFail()
         }
     }

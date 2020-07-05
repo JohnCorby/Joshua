@@ -57,7 +57,7 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.block().visit()
     )
 
-    override fun visitRet(ctx: RetContext) = Ret(ctx.value.visit())
+    override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
     override fun visitLitExpr(ctx: LitExprContext) = when {
         ctx.INT_LITERAL() != null -> Literal(ctx.text.toInt())
         ctx.FLOAT_LITERAL() != null -> Literal(ctx.text.toFloat())

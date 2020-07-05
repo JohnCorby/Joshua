@@ -12,8 +12,5 @@ dependencies {
 }
 
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = '11'
-        freeCompilerArgs = ['-XXLanguage:+InlineClasses']
-    }
+    kotlinOptions.jvmTarget = '11'
 }
