@@ -1,7 +1,9 @@
 package com.johncorby.joshua.element
 
 import com.johncorby.joshua.Type
-import com.johncorby.joshua.checkTypes
+import com.johncorby.joshua.TypeChecked
+import com.johncorby.joshua.Typed
+import com.johncorby.joshua.checkTypesSame
 
 /**
  * a top-level element
@@ -15,13 +17,17 @@ interface Define : Element {
 
 
 data class FuncDefine(
-    val type: Type,
+    override val type: Type,
     override val name: String,
     val args: List<VarDefine>,
     val block: Block
-) : ElementImpl(), Define, Scoped {
+) : ElementImpl(), Define, Scoped, Typed {
     companion object {
-        lateinit var current: FuncDefine
+        /**
+         * the current [FuncDefine] we are in when evaling
+         * used with [Ret]
+         */
+        var current: FuncDefine? = null
     }
 
     override fun preEval() {
@@ -35,28 +41,30 @@ data class FuncDefine(
         super<Scoped>.preEval()
     }
 
-    override fun evalImpl() = "${type.eval()} $name" +
+    override fun evalImpl() = "${type.c} $name" +
             args.eval().joinToString(",", "(", ")") +
             block.blockEval()
+
+    override fun postEval() {
+        current = null
+    }
 }
 
 
-data class VarDefine(val type: Type, override val name: String, val init: Expr? = null) :
-    ElementImpl(), Define, Statement {
+data class VarDefine(override val type: Type, override val name: String, val init: Expr? = null) :
+    ElementImpl(), Define, Statement, Typed, TypeChecked {
+    override fun checkTypes() {
+        if (init?.type == null) return
+        checkTypesSame("init", init.type, "var", type)
+    }
+
     override fun preEval() {
         check(type != Type.VOID) { "vars cant be void type" }
 
         Scope.add(this)
     }
 
-    override fun evalImpl(): String {
-        val initEval = init?.eval()
-
-        if (init?.type != null)
-            checkTypes("init", init.type, "var", type)
-
-        return "${type.eval()} $name" + initEval?.let { "=$it" }.orEmpty()
-    }
+    override fun evalImpl() = "${type.c} $name" + init?.evalThenCheckTypes()?.let { "=$it" }.orEmpty()
 }
 
 
@@ -95,6 +103,6 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
     }
 
     override fun evalImpl() = "struct $name" +
-            "${vars.blockEval()} ;" +
+            vars.blockEval() + ";" +
             funcs.eval().joinToString("")
 }

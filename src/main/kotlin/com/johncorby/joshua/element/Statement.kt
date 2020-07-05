@@ -1,44 +1,35 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.checkTypes
-import com.johncorby.joshua.className
+import com.johncorby.joshua.*
 
 interface Statement : Element
 
-data class FuncCall(val name: String, val args: List<Expr>) : ExprImpl(), Statement {
+data class FuncCall(val name: String, val args: List<Expr>) : ExprImpl(), Statement, TypeChecked {
     private lateinit var define: FuncDefine
+    override fun checkTypes() {
+        val defTypes = define.args.map { it.type }
+        val ourTypes = args.map { it.type }
+        checkTypesSame("call arg", ourTypes, "func arg", defTypes)
+    }
+
     override fun preEval() {
         define = Scope[name]
         type = define.type
     }
 
-    override fun evalImpl(): String {
-        val argsEval = args.eval()
-
-        val defTypes = define.args.map { it.type }
-        val ourTypes = args.map { it.type }
-        // todo maybe add more detail?????? maybe not idk
-        check(defTypes == ourTypes) { "call arg types $ourTypes doesnt match func arg types $defTypes" }
-
-        return "(${type.eval()})(" +
-                name + argsEval.joinToString(",", "(", ")") +
-                ")"
-    }
+    override fun evalImpl() = "(${type.c})(" +
+            name +
+            args.evalThenCheckTypes().joinToString(",", "(", ")") +
+            ")"
 }
 
-data class VarAssign(val name: String, val value: Expr) : ExprImpl(), Statement {
+data class VarAssign(val name: String, val value: Expr) : ExprImpl(), Statement, TypeChecked {
+    override fun checkTypes() = checkTypesSame("value", value.type, "var", type)
     override fun preEval() {
-        val define: FuncDefine = Scope[name]
-        type = define.type
+        type = Scope.get<VarDefine>(name).type
     }
 
-    override fun evalImpl(): String {
-        val valueEval = value.eval()
-
-        checkTypes("value", value.type, "var", type)
-
-        return "$name=$valueEval"
-    }
+    override fun evalImpl() = "$name=${value.evalThenCheckTypes()}"
 }
 
 
@@ -48,39 +39,32 @@ fun Block.blockEval() = eval().joinToString("", "{", "}") { "$it;" }
 
 
 /**
- * control statement that has a conditional expression
+ * statement that has a conditional expression
  */
-abstract class ControlStatement : ElementImpl(), Statement, Scoped {
-    abstract val condition: Expr
+abstract class ConditionalStatement : ElementImpl(), Statement, Scoped, TypeChecked {
+    protected abstract val condition: Expr
 
-    override fun preEval() {
-        check(condition.type.isBool()) { "$className condition must be bool (got ${condition.type}" }
-
-        super<Scoped>.preEval()
-    }
+    override fun checkTypes() = checkTypeIs("$className condition", condition.type, Type.BOOL)
 }
 
-data class If(override val condition: Expr, val thenBlock: Block, val elseBlock: Block? = null) : ControlStatement() {
-    override fun evalImpl() = "if(${condition.eval()})${thenBlock.blockEval()}" +
+data class If(override val condition: Expr, val thenBlock: Block, val elseBlock: Block? = null) :
+    ConditionalStatement() {
+    override fun evalImpl() = "if(${condition.evalThenCheckTypes()})${thenBlock.blockEval()}" +
             elseBlock?.let { "else${it.blockEval()}" }.orEmpty()
 }
 
-data class Until(override val condition: Expr, val block: Block) : ControlStatement() {
-    override fun evalImpl() = "while(!(${condition.eval()}))${block.blockEval()}"
+data class Until(override val condition: Expr, val block: Block) : ConditionalStatement() {
+    override fun evalImpl() = "while(!(${condition.evalThenCheckTypes()}))${block.blockEval()}"
 }
 
 data class For(val init: VarDefine, override val condition: Expr, val update: Statement, val block: Block) :
-    ControlStatement() {
-    override fun evalImpl() = "for(${init.eval()};${condition.eval()};${update.eval()})${block.blockEval()}"
+    ConditionalStatement() {
+    override fun evalImpl() =
+        "for(${init.evalThenCheckTypes()};${condition.eval()};${update.eval()})${block.blockEval()}"
 }
 
 
-data class Ret(val value: Expr? = null) : ElementImpl(), Statement {
-    override fun evalImpl(): String {
-        val valueEval = value?.eval()
-
-        checkTypes("return", value.type, "func", FuncDefine.current.type)
-
-        return "return" + valueEval.orEmpty()
-    }
+data class Ret(val value: Expr? = null) : ElementImpl(), Statement, TypeChecked {
+    override fun checkTypes() = checkTypesSame("return", value.type, "func", FuncDefine.current!!.type)
+    override fun evalImpl() = "return" + value?.evalThenCheckTypes().orEmpty()
 }

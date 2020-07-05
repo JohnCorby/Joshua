@@ -1,6 +1,8 @@
 /**
  * utils for handling/displaying errors/warnings
  */
+@file:Suppress("NOTHING_TO_INLINE")
+
 package com.johncorby.joshua
 
 object FilePos {
@@ -28,11 +30,11 @@ fun warn(message: Any?) {
 /**
  * throw error that wont be displayed
  */
-fun ignore(): Nothing = throw Ignore()
+inline fun ignore(): Nothing = throw Ignore()
 class Ignore : RuntimeException()
 
 
-inline fun <T, R> Iterable<T>.mapCatching(transform: (T) -> R): List<R> {
+fun <T, R> Iterable<T>.mapCatching(transform: (T) -> R): List<R> {
     val destination = ArrayList<R>()
     forEach {
         try {
@@ -47,8 +49,9 @@ inline fun <T, R> Iterable<T>.mapCatching(transform: (T) -> R): List<R> {
             Compiler.queueFail()
         } catch (e: Throwable) {
             print(Color.RED)
-            println("UNCAUGHT ERROR")
-            e.printStackTrace()
+            println("UNCAUGHT ERROR:")
+            e.printStackTrace(System.out)
+            FilePos.print()
             println()
             print(Color.RESET)
             Compiler.queueFail()

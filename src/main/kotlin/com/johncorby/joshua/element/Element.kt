@@ -32,6 +32,9 @@ interface Element {
     fun evalImpl(): String
 }
 
+/**
+ * auto inits [ctx], less code writing
+ */
 abstract class ElementImpl : Element {
     override val ctx = FilePos.ctx
 }

@@ -16,7 +16,7 @@ package com.johncorby.joshua
  *
  * todo eventually, make this Element (pass 2) so we can have custom types
  */
-enum class Type(private val c: String, val size: Int) {
+enum class Type(val c: String, val size: Int) {
     BYTE("signed char", 1),
     UBYTE("unsigned char", 1),
     SHORT("signed short", 2),
@@ -37,28 +37,4 @@ enum class Type(private val c: String, val size: Int) {
     ADDR("void*", 8);
 
     override fun toString() = name.toLowerCase()
-    fun eval() = c
-
-    fun isNum() = equals(BYTE, UBYTE, SHORT, USHORT, INT, UINT, LONG, ULONG, FLOAT, DOUBLE)
-    fun isBool() = this == BOOL
-    fun isNumOrBool() = isNum() || isBool()
 }
-
-/**
- * tries to convert this [String] to [Type]
- */
-fun String.toType() = Type.values().find { this == it.toString() } ?: error("type $this doesnt exist")
-
-
-/**
- * helper interface to remind me to check types
- */
-interface TypeChecked {
-   fun checkTypes()
-}
-
-/**
- * check that 2 types are equal
- */
-fun checkTypes(firstName: String, first: Type, secondName: String, second: Type) =
-    check(first == second) { "$firstName type $first doesnt match $secondName type $second" }

@@ -4,6 +4,7 @@ import com.johncorby.joshua.antlr.GrammarBaseVisitor
 import com.johncorby.joshua.antlr.GrammarParser.*
 import com.johncorby.joshua.element.*
 import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.ParseTree
 
 typealias Context = ParserRuleContext
@@ -12,6 +13,10 @@ inline fun <reified T : Element> Context.visit() = Visitor.visit(this) as T
 inline fun <reified T : Element> List<Context>.visit() = mapCatching { it.visit<T>() }
 
 fun BlockContext.visit() = statements.visit<Statement>()
+
+fun Token.toType() = Type.values().find { text == it.toString() } ?: error("type $text doesnt exist")
+fun Token.toBinaryOp() = BinaryOp.values().find { text == it.toString() } ?: error("binary op '$text' doesnt exist")
+fun Token.toUnaryOp() = UnaryOp.values().find { text == it.toString() } ?: error("unary op '$text' doesnt exist")
 
 
 /**
@@ -28,16 +33,15 @@ object Visitor : GrammarBaseVisitor<Element>() {
 
     override fun visitProgram(ctx: ProgramContext) = Program(ctx.defines.visit())
     override fun visitFuncDefine(ctx: FuncDefineContext) = FuncDefine(
-        ctx.type.text.toType(),
+        ctx.type.toType(),
         ctx.name.text,
         ctx.args.visit(),
         ctx.block().visit()
     )
 
-    override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
     override fun visitFuncCall(ctx: FuncCallContext) = FuncCall(ctx.name.text, ctx.args.visit())
     override fun visitVarDefine(ctx: VarDefineContext) = VarDefine(
-        ctx.type.text.toType(),
+        ctx.type.toType(),
         ctx.name.text,
         ctx.init?.visit()
     )
@@ -58,6 +62,10 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.block().visit()
     )
 
+    override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
+    override fun visitBrk(ctx: BrkContext) = TODO()
+    override fun visitCont(ctx: ContContext) = TODO()
+
     @Suppress("PlatformExtensionReceiverOfInline")
     override fun visitLitExpr(ctx: LitExprContext) = when {
         ctx.INT_LITERAL() != null -> Literal(ctx.text.toInt())
@@ -68,15 +76,14 @@ object Visitor : GrammarBaseVisitor<Element>() {
         else -> error("invalid literal ${ctx.text}")
     }
 
+    override fun visitParenExpr(ctx: ParenExprContext) = ctx.expr().visit<Expr>()
     override fun visitVarExpr(ctx: VarExprContext) = Var(ctx.text)
-    override fun visitCastExpr(ctx: CastExprContext) = ctx.expr().visit<Expr>().also {
-        it.type = ctx.type.text.toType()
-    }
+    override fun visitCastExpr(ctx: CastExprContext) = Cast(ctx.type.toType(), ctx.expr().visit())
 
-    override fun visitUnExpr(ctx: UnExprContext) = Unary(ctx.expr().visit(), ctx.op.text.toUnaryOp())
+    override fun visitUnExpr(ctx: UnExprContext) = Unary(ctx.expr().visit(), ctx.op.toUnaryOp())
     override fun visitBinExpr(ctx: BinExprContext) = Binary(
         ctx.left.visit(),
         ctx.right.visit(),
-        ctx.op.text.toBinaryOp()
+        ctx.op.toBinaryOp()
     )
 }

@@ -1,28 +1,19 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.BinaryOp
-import com.johncorby.joshua.Type
-import com.johncorby.joshua.UnaryOp
-import com.johncorby.joshua.className
+import com.johncorby.joshua.*
 
-interface Expr : Element {
-    /**
-     * NOTE: eval sub-elements before getting their types.
-     * otherwise, this will be initialized pre-eval
-     *
-     * casting is built-in
-     * and lets c do the actual work
-     * meaning it might be a conversion or it might not be.
-     * todo we should probably be in more control of this later
-     */
-    var type: Type
-}
+/**
+ * NOTE: eval sub-elements before getting their types.
+ * otherwise, this will be initialized pre-eval
+ */
+interface Expr : Element, Typed
 
+/**
+ * auto inits [type], less code writing
+ */
 abstract class ExprImpl : ElementImpl(), Expr {
     override lateinit var type: Type
 }
-
-inline val Expr?.type get() = this?.type ?: Type.VOID
 
 
 data class Var(val name: String) : ExprImpl() {
@@ -30,9 +21,7 @@ data class Var(val name: String) : ExprImpl() {
         type = Scope.get<VarDefine>(name).type
     }
 
-    override fun evalImpl() = "(${type.eval()})(" +
-            name +
-            ")"
+    override fun evalImpl() = "(${type.c})($name)"
 }
 
 data class Literal<T : Any>(val value: T) : ExprImpl() {
@@ -47,7 +36,7 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
         }
     }
 
-    override fun evalImpl() = "(${type.eval()})(" +
+    override fun evalImpl() = "(${type.c})(" +
             when (value) {
                 is Char -> "'$value'"
                 is String -> "\"$value\""
@@ -58,31 +47,42 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
 }
 
 
-data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ExprImpl() {
+data class Cast(override val type: Type, val expr: Expr) : ElementImpl(), Expr, TypeChecked {
+    override fun checkTypes() {
+        // todo does nothing for now, just let c handle casting
+    }
+
+    override fun preEval() = checkTypes()
+    override fun evalImpl() = "(${type.c})(${expr.eval()})"
+}
+
+data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ExprImpl(), TypeChecked {
+    override fun checkTypes() = operator.check(left.type, right.type)
     override fun evalImpl(): String {
         val leftEval = left.eval()
         val rightEval = right.eval()
 
-        operator.check(left.type, right.type)
+        checkTypes()
         type = left.type
 
-        return "(${type.eval()})(" +
+        return "(${type.c})(" +
                 leftEval +
-                operator.eval() +
+                operator.c +
                 rightEval +
                 ")"
     }
 }
 
-data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl() {
+data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl(), TypeChecked {
+    override fun checkTypes() = operator.check(operand.type)
     override fun evalImpl(): String {
         val operandEval = operand.eval()
 
-        operator.check(operand.type)
+        checkTypes()
         type = operand.type
 
-        return "(${type.eval()})(" +
-                operator.eval() +
+        return "(${type.c})(" +
+                operator.c +
                 operandEval +
                 ")"
     }
