@@ -45,13 +45,17 @@ inline var List<Element>.parent: Element
 
 
 data class Program(val defines: List<Define>) : ElementImpl() {
+    override var parent: Element
+        get() = error("attempted to get $this.parent")
+        set(value) = error("attempted to set $this.parent = $value")
+
     init {
         defines.parent = this
     }
 
     override fun evalImpl() = defines.eval()
         .joinToString("") { "$it;" }
-        .postProcess()
+//        .postProcess()
 
     private fun String.postProcess() = this
         .replace(";+".toRegex(), ";") // duplicate ;

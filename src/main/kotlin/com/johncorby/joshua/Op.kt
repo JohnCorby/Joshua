@@ -3,9 +3,7 @@
  */
 package com.johncorby.joshua
 
-import com.johncorby.joshua.element.Type
-
-enum class BinaryOp(private val op: String, private val c: String = op) {
+enum class BinaryOp(private val c: String) {
     MUL("*"),
     DIV("/"),
     MOD("%"),
@@ -22,17 +20,19 @@ enum class BinaryOp(private val op: String, private val c: String = op) {
     NEQ("!=");
 
 
-    override fun toString() = op
+    override fun toString() = c
     fun eval() = c
 
-    private fun isNumeric() = equals(MUL, DIV, MOD, ADD, SUB)
-    private fun isConditional() = equals(LT, LTE, GT, GTE, EQ, NEQ)
+    private fun takesNums() = equals(MUL, DIV, MOD, ADD, SUB, LT, LTE, GT, GTE)
+    private fun takesNumsOrBools() = equals(EQ, NEQ)
     fun check(left: Type, right: Type) {
+        check(left == right) { "types $left and $right are different" }
+
         when {
-            isNumeric() -> check(left.isNum() && right.isNum())
+            takesNums() -> check(left.isNum() && right.isNum())
             { "op '$this' only works for numbers (got $left and $right)" }
-            isConditional() -> check(left.isBool() && right.isBool())
-            { "op '$this' only works for bools (got $left and $right)" }
+            takesNumsOrBools() -> check(left.isNumOrBool() && right.isNumOrBool())
+            { "op '$this' only works for numbers and bools (got $left and $right)" }
         }
     }
 }

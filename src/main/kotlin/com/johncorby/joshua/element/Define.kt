@@ -1,5 +1,8 @@
 package com.johncorby.joshua.element
 
+import com.johncorby.joshua.Type
+import com.johncorby.joshua.checkTypes
+
 /**
  * a top-level element
  * usually tracked
@@ -45,12 +48,18 @@ data class VarDefine(val type: Type, override val name: String, val init: Expr? 
 
     override fun preEval() {
         check(type != Type.VOID) { "vars cant be void type" }
-        // todo check init type
 
         Scope.add(this)
     }
 
-    override fun evalImpl() = "${type.eval()} $name" + init?.eval()?.let { "=$it" }.orEmpty()
+    override fun evalImpl(): String {
+        val initEval = init?.eval()
+
+        if (init?.type != null)
+            checkTypes("init", init.type, "var", type)
+
+        return "${type.eval()} $name" + initEval?.let { "=$it" }.orEmpty()
+    }
 }
 
 
@@ -83,7 +92,7 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
                     args = listOf(VarDefine(Type.ADDR, "this")) + it.args,
                     block = it.block
                 )
-                else -> error("structs can only contain vars and funcs (got $it)")
+                else -> error("structs can only contain vars and funcs")
             }
         }
 

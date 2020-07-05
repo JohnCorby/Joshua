@@ -1,6 +1,4 @@
-package com.johncorby.joshua.element
-
-import com.johncorby.joshua.equals
+package com.johncorby.joshua
 
 /**
  * represents a data type
@@ -41,8 +39,9 @@ enum class Type(private val c: String, val size: Int) {
     override fun toString() = name.toLowerCase()
     fun eval() = c
 
-    fun isNum() = equals(BYTE, UBYTE, SHORT, USHORT, INT, UINT, LONG, ULONG)
+    fun isNum() = equals(BYTE, UBYTE, SHORT, USHORT, INT, UINT, LONG, ULONG, FLOAT, DOUBLE)
     fun isBool() = this == BOOL
+    fun isNumOrBool() = isNum() || isBool()
 }
 
 /**
@@ -51,10 +50,5 @@ enum class Type(private val c: String, val size: Int) {
 fun String.toType() = Type.values().find { this == it.toString() } ?: error("type $this doesnt exist")
 
 
-
-fun getBetterType(a: Type, b: Type): Type {
-
-}
-fun checkAutoCast(from: Type, to: Type) {
-
-}
+fun checkTypes(firstName: String, first: Type, secondName: String, second: Type) =
+    check(first == second) { "$firstName type $first doesnt match $secondName type $second" }

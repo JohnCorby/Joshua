@@ -1,20 +1,28 @@
 package com.johncorby.joshua.element
 
 import com.johncorby.joshua.BinaryOp
+import com.johncorby.joshua.Type
 import com.johncorby.joshua.UnaryOp
 import com.johncorby.joshua.className
 
 interface Expr : Element {
     /**
-     * this either gets initialized pre-eval,
-     * or during eval if types of sub-elements are needed
+     * NOTE: eval sub-elements before getting their types.
+     * otherwise, this will be initialized pre-eval
+     *
+     * casting is built-in
+     * and lets c do the actual work
+     * meaning it might be a conversion or it might not be.
+     * todo we should probably be in more control of this later
      */
-    val type: Type
+    var type: Type
 }
 
 abstract class ExprImpl : ElementImpl(), Expr {
     override lateinit var type: Type
 }
+
+inline val Expr?.type get() = this?.type ?: Type.VOID
 
 
 data class Var(val name: String) : ExprImpl() {
@@ -22,7 +30,9 @@ data class Var(val name: String) : ExprImpl() {
         type = Scope.get<VarDefine>(name).type
     }
 
-    override fun evalImpl() = name
+    override fun evalImpl() = "(${type.eval()})(" +
+            name +
+            ")"
 }
 
 data class Literal<T : Any>(val value: T) : ExprImpl() {
@@ -37,12 +47,14 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
         }
     }
 
-    override fun evalImpl() = when (value) {
-        is Char -> "'$value'"
-        is String -> "\"$value\""
-        is Boolean -> if (value) "1" else "0"
-        else -> value.toString()
-    }
+    override fun evalImpl() = "(${type.eval()})(" +
+            when (value) {
+                is Char -> "'$value'"
+                is String -> "\"$value\""
+                is Boolean -> if (value) "1" else "0"
+                else -> value.toString()
+            } +
+            ")"
 }
 
 
@@ -57,11 +69,13 @@ data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : Exp
         val rightEval = right.eval()
 
         operator.check(left.type, right.type)
-        // choose the largest of the 2 types
-        type = if (left.type.size > right.type.size) left.type else right.type
+        type = left.type
 
-        // promote to that largest type
-        return "(${type.eval()})$leftEval${operator.eval()}(${type.eval()})$rightEval"
+        return "(${type.eval()})(" +
+                leftEval +
+                operator.eval() +
+                rightEval +
+                ")"
     }
 }
 
@@ -74,9 +88,11 @@ data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl() {
         val operandEval = operand.eval()
 
         operator.check(operand.type)
-        // simple passthrough
         type = operand.type
 
-        return "${operator.eval()}$operandEval"
+        return "(${type.eval()})(" +
+                operator.eval() +
+                operandEval +
+                ")"
     }
 }

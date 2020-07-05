@@ -34,6 +34,7 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.block().visit()
     )
 
+    override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
     override fun visitFuncCall(ctx: FuncCallContext) = FuncCall(ctx.name.text, ctx.args.visit())
     override fun visitVarDefine(ctx: VarDefineContext) = VarDefine(
         ctx.type.text.toType(),
@@ -57,7 +58,7 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.block().visit()
     )
 
-    override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
+    @Suppress("PlatformExtensionReceiverOfInline")
     override fun visitLitExpr(ctx: LitExprContext) = when {
         ctx.INT_LITERAL() != null -> Literal(ctx.text.toInt())
         ctx.FLOAT_LITERAL() != null -> Literal(ctx.text.toFloat())
@@ -68,6 +69,10 @@ object Visitor : GrammarBaseVisitor<Element>() {
     }
 
     override fun visitVarExpr(ctx: VarExprContext) = Var(ctx.text)
+    override fun visitCastExpr(ctx: CastExprContext) = ctx.expr().visit<Expr>().also {
+        it.type = ctx.type.text.toType()
+    }
+
     override fun visitUnExpr(ctx: UnExprContext) = Unary(ctx.expr().visit(), ctx.op.text.toUnaryOp())
     override fun visitBinExpr(ctx: BinExprContext) = Binary(
         ctx.left.visit(),
