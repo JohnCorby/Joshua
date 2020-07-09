@@ -3,8 +3,8 @@ package com.johncorby.joshua.element
 import com.johncorby.joshua.*
 
 /**
- * NOTE: eval sub-elements before getting their types.
- * otherwise, this will be initialized pre-eval
+ * if type depends on sub-elements, init type mid-eval
+ * otherwise, init as constructor param or in pre-eval
  */
 interface Expr : Element, Typed
 
@@ -21,7 +21,7 @@ data class Var(val name: String) : ExprImpl() {
         type = Scope.get<VarDefine>(name).type
     }
 
-    override fun evalImpl() = "(${type.c})($name)"
+    override fun evalImpl() = type.cast(name)
 }
 
 data class Literal<T : Any>(val value: T) : ExprImpl() {
@@ -36,14 +36,14 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
         }
     }
 
-    override fun evalImpl() = "(${type.c})(" +
-            when (value) {
-                is Char -> "'$value'"
-                is String -> "\"$value\""
-                is Boolean -> if (value) "1" else "0"
-                else -> value.toString()
-            } +
-            ")"
+    override fun evalImpl() = type.cast(
+        when (value) {
+            is Char -> "'$value'"
+            is String -> "\"$value\""
+            is Boolean -> if (value) "1" else "0"
+            else -> value.toString()
+        }
+    )
 }
 
 
@@ -53,7 +53,7 @@ data class Cast(override val type: Type, val expr: Expr) : ElementImpl(), Expr, 
     }
 
     override fun preEval() = checkTypes()
-    override fun evalImpl() = "(${type.c})(${expr.eval()})"
+    override fun evalImpl() = type.cast(expr.eval())
 }
 
 data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : ExprImpl(), TypeChecked {
@@ -65,11 +65,11 @@ data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : Exp
         checkTypes()
         type = left.type
 
-        return "(${type.c})(" +
-                leftEval +
-                operator.c +
-                rightEval +
-                ")"
+        return type.cast(
+            leftEval,
+            operator.c,
+            rightEval
+        )
     }
 }
 
@@ -81,9 +81,9 @@ data class Unary(val operand: Expr, val operator: UnaryOp) : ExprImpl(), TypeChe
         checkTypes()
         type = operand.type
 
-        return "(${type.c})(" +
-                operator.c +
-                operandEval +
-                ")"
+        return type.cast(
+            operator.c,
+            operandEval
+        )
     }
 }

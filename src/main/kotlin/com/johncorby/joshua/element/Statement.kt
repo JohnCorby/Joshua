@@ -6,21 +6,17 @@ interface Statement : Element
 
 data class FuncCall(val name: String, val args: List<Expr>) : ExprImpl(), Statement, TypeChecked {
     private lateinit var define: FuncDefine
-    override fun checkTypes() {
-        val defTypes = define.args.map { it.type }
-        val ourTypes = args.map { it.type }
-        checkTypesSame("call arg", ourTypes, "func arg", defTypes)
-    }
+    override fun checkTypes() = checkTypesSame("call arg", args.types, "func arg", define.args.types)
 
     override fun preEval() {
         define = Scope[name]
         type = define.type
     }
 
-    override fun evalImpl() = "(${type.c})(" +
-            name +
-            args.evalThenCheckTypes().joinToString(",", "(", ")") +
-            ")"
+    override fun evalImpl() = type.cast(
+        name,
+        args.evalThenCheckTypes().joinToString(",", "(", ")")
+    )
 }
 
 data class VarAssign(val name: String, val value: Expr) : ExprImpl(), Statement, TypeChecked {
@@ -67,4 +63,10 @@ data class For(val init: VarDefine, override val condition: Expr, val update: St
 data class Ret(val value: Expr? = null) : ElementImpl(), Statement, TypeChecked {
     override fun checkTypes() = checkTypesSame("return", value.type, "func", FuncDefine.current!!.type)
     override fun evalImpl() = "return" + value?.evalThenCheckTypes().orEmpty()
+}
+class Break : ElementImpl(), Statement {
+    override fun evalImpl() = "break"
+}
+class Continue : ElementImpl(), Statement {
+    override fun evalImpl() = "break"
 }

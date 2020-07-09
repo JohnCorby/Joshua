@@ -3,15 +3,12 @@ package com.johncorby.joshua
 import com.johncorby.joshua.antlr.GrammarBaseVisitor
 import com.johncorby.joshua.antlr.GrammarParser.*
 import com.johncorby.joshua.element.*
-import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.ParseTree
 import org.antlr.v4.runtime.tree.RuleNode
 
-typealias Context = ParserRuleContext
-
-inline fun <reified T : Element> Context.visit() = Visitor.visit(this) as T
-inline fun <reified T : Element> List<Context>.visit() = mapSafe { it.visit<T>() }
+inline fun <reified T : Element> ParseTree.visit() = Visitor.visit(this) as T
+inline fun <reified T : Element> List<ParseTree>.visit() = mapSafe { it.visit<T>() }
 
 fun BlockContext.visit() = statements.visit<Statement>()
 
@@ -21,7 +18,7 @@ fun Token.toUnaryOp() = UnaryOp.values().find { text == it.toString() } ?: error
 
 
 /**
- * converts [Context]s to [Element]s
+ * converts [ParseTree]s to [Element]s
  * with [Visitor.visit]
  *
  * the 1st pass
@@ -30,14 +27,14 @@ object Visitor : GrammarBaseVisitor<Element>() {
     override fun visitChildren(node: RuleNode): Element {
         for (i in 0 until node.childCount) {
             val child = node.getChild(i)
-            if (child is Context) runSafe { return visit(child) }
+            runSafe { return visit(child) }
         }
         ignore()
     }
 
     override fun visit(tree: ParseTree): Element {
-        FilePos.ctx = tree as Context
-        return tree.accept(this)
+        FilePos.update(tree)
+        return tree.accept(this) ?: ignore()
     }
 
 

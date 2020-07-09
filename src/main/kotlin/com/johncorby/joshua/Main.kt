@@ -4,9 +4,6 @@
  *  c is apparently not cool sometimes, so i shouldnt completely trust it to catch everything like that.
  *  this is my language, c is just the backend, cmon will.
  *  this also means that we'll probably PUT COMPATIBILITY WITH OTHER LANGUAGES (mainly C/C++) AT LOWER PRIORITY
- *
- * todo
- *  the next business after symbols is probably a bunch more type checking on our part (again, we do it, not c!!!)
  */
 package com.johncorby.joshua
 

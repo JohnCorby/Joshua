@@ -5,16 +5,36 @@
 
 package com.johncorby.joshua
 
-object FilePos {
-    lateinit var ctx: Context
+import com.johncorby.joshua.element.Element
+import org.antlr.v4.runtime.ParserRuleContext
+import org.antlr.v4.runtime.Token
+import org.antlr.v4.runtime.tree.Tree
 
-    fun print() {
-        val line = ctx.start.line
-        val char = ctx.start.charPositionInLine + 1
+class FilePos private constructor(val line: Int, val char: Int) {
+    override fun toString() = "$line:$char"
 
-        println("at $line:$char")
-        println(Compiler.inText.lines()[line - 1])
-        println(" ".repeat(char - 1) + "^")
+    companion object {
+        lateinit var current: FilePos
+
+        inline fun update(element: Element) {
+            current = element.filePos
+        }
+
+        fun update(tree: Tree) = when (val payload = tree.payload) {
+            is ParserRuleContext -> update(payload.start)
+            is Token -> update(payload)
+            else -> errorc("cant update filepos using ${tree.className} (${tree.toStringTree()})")
+        }
+
+        private inline fun update(token: Token) {
+            current = FilePos(token.line, token.charPositionInLine + 1)
+        }
+
+        fun print() = with(current) {
+            println("at $current")
+            println(Compiler.inText.lines()[line - 1])
+            println(" ".repeat(char - 1) + "^")
+        }
     }
 }
 
@@ -37,9 +57,9 @@ inline fun checkc(value: Boolean, lazyMessage: () -> Any) {
 inline fun ignore(): Nothing = throw Ignore()
 
 
-inline fun <R> runSafe(block: () -> R): R? {
+inline fun <R> runSafe(block: () -> R) {
     try {
-        return block()
+        block()
     } catch (e: Ignore) {
     } catch (e: CompileError) {
         print(Color.RED)
@@ -57,7 +77,6 @@ inline fun <R> runSafe(block: () -> R): R? {
         print(Color.RESET)
         Compiler.queueFail()
     }
-    return null
 }
 
 fun <T, R> Iterable<T>.mapSafe(transform: (T) -> R): List<R> {

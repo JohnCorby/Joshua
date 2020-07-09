@@ -1,6 +1,5 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.Context
 import com.johncorby.joshua.FilePos
 import com.johncorby.joshua.mapSafe
 
@@ -13,12 +12,12 @@ import com.johncorby.joshua.mapSafe
  * the 2nd pass
  */
 interface Element {
-    val ctx: Context
+    val filePos: FilePos
 
     fun preEval() {}
     fun postEval() {}
     fun eval(): String {
-        FilePos.ctx = ctx
+        FilePos.update(this)
         preEval()
         val ret = evalImpl()
         postEval()
@@ -36,7 +35,7 @@ interface Element {
  * auto inits [ctx], less code writing
  */
 abstract class ElementImpl : Element {
-    override val ctx = FilePos.ctx
+    override val filePos = FilePos.current
 }
 
 fun List<Element>.eval() = mapSafe { it.eval() }

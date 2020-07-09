@@ -39,6 +39,11 @@ fun UnaryOp.check(type: Type) = when (this) {
     { "op '$this' only works for bools (got $type)" }
 }
 
+/**
+ * c casting boilerplate for [parts]
+ */
+fun Type.cast(vararg parts: String) = "($c)(${parts.joinToString("")})"
+
 
 /**
  * has a type
@@ -55,7 +60,10 @@ inline val Expr?.type get() = this?.type ?: VOID
  */
 interface TypeChecked : Element {
     /**
-     * check types of sub-elements
+     * check types of sub-elements,
+     * maybe compare to own type
+     *
+     * NOTE: dont init own type here
      */
     fun checkTypes()
 

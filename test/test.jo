@@ -6,12 +6,12 @@ struct bruh {
 //        <<puts("fuck you")>>
     }
 }
-dsa;ld;ld;l;s
+
 int goo() {}
 
 int main() {
 //    <<bruh$hello(&hi,0,0,0)>>
     float i = 1 as float
     int e = 1 + i as int + 2
-    return (-i) as string
+    return (-i) as int
 }
