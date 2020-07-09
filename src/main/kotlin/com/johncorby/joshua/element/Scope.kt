@@ -1,6 +1,8 @@
 package com.johncorby.joshua.element
 
+import com.johncorby.joshua.checkc
 import com.johncorby.joshua.className
+import com.johncorby.joshua.errorc
 import com.johncorby.joshua.name
 import kotlin.reflect.KClass
 
@@ -21,7 +23,7 @@ object Scope {
     }
 
     fun destroy() {
-        check(level > 0) { "cant destroy top level scope" }
+        checkc(level > 0) { "cant destroy top level scope" }
 
         val defMap = scope.removeAt(level)
         defMap.values.forEach { it.undefine() }
@@ -31,7 +33,7 @@ object Scope {
     fun add(define: Define) {
         val defMap = scope[level]
 
-        defMap[define.name]?.run { error("${define.name} already exists in this scope as $className") }
+        defMap[define.name]?.run { errorc("${define.name} already exists in this scope as $className") }
 
         defMap[define.name] = define
     }
@@ -41,12 +43,12 @@ object Scope {
             val defMap = scope[currentLevel]
 
             val define = defMap[name] ?: continue
-            check(clazz.isInstance(define)) { "expected $name to be ${clazz.name}, but got ${define.className}" }
+            checkc(clazz.isInstance(define)) { "expected $name to be ${clazz.name}, but got ${define.className}" }
             @Suppress("UNCHECKED_CAST")
             return define as T
         }
 
-        error("${clazz.name} $name doesnt exist in any scope")
+        errorc("${clazz.name} $name doesnt exist in any scope")
     }
 
     inline operator fun <reified T : Define> get(name: String) = get(T::class, name)

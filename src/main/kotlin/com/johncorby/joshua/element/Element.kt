@@ -2,7 +2,7 @@ package com.johncorby.joshua.element
 
 import com.johncorby.joshua.Context
 import com.johncorby.joshua.FilePos
-import com.johncorby.joshua.mapCatching
+import com.johncorby.joshua.mapSafe
 
 
 /**
@@ -39,7 +39,7 @@ abstract class ElementImpl : Element {
     override val ctx = FilePos.ctx
 }
 
-fun List<Element>.eval() = mapCatching { it.eval() }
+fun List<Element>.eval() = mapSafe { it.eval() }
 
 
 data class Program(val defines: List<Define>) : ElementImpl() {

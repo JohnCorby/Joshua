@@ -6,17 +6,18 @@ import com.johncorby.joshua.element.*
 import org.antlr.v4.runtime.ParserRuleContext
 import org.antlr.v4.runtime.Token
 import org.antlr.v4.runtime.tree.ParseTree
+import org.antlr.v4.runtime.tree.RuleNode
 
 typealias Context = ParserRuleContext
 
 inline fun <reified T : Element> Context.visit() = Visitor.visit(this) as T
-inline fun <reified T : Element> List<Context>.visit() = mapCatching { it.visit<T>() }
+inline fun <reified T : Element> List<Context>.visit() = mapSafe { it.visit<T>() }
 
 fun BlockContext.visit() = statements.visit<Statement>()
 
-fun Token.toType() = Type.values().find { text == it.toString() } ?: error("type $text doesnt exist")
-fun Token.toBinaryOp() = BinaryOp.values().find { text == it.toString() } ?: error("binary op '$text' doesnt exist")
-fun Token.toUnaryOp() = UnaryOp.values().find { text == it.toString() } ?: error("unary op '$text' doesnt exist")
+fun Token.toType() = Type.values().find { text == it.toString() } ?: errorc("type $text doesnt exist")
+fun Token.toBinaryOp() = BinaryOp.values().find { text == it.toString() } ?: errorc("binary op '$text' doesnt exist")
+fun Token.toUnaryOp() = UnaryOp.values().find { text == it.toString() } ?: errorc("unary op '$text' doesnt exist")
 
 
 /**
@@ -26,10 +27,19 @@ fun Token.toUnaryOp() = UnaryOp.values().find { text == it.toString() } ?: error
  * the 1st pass
  */
 object Visitor : GrammarBaseVisitor<Element>() {
+    override fun visitChildren(node: RuleNode): Element {
+        for (i in 0 until node.childCount) {
+            val child = node.getChild(i)
+            if (child is Context) runSafe { return visit(child) }
+        }
+        ignore()
+    }
+
     override fun visit(tree: ParseTree): Element {
         FilePos.ctx = tree as Context
-        return super.visit(tree) ?: ignore()
+        return tree.accept(this)
     }
+
 
     override fun visitProgram(ctx: ProgramContext) = Program(ctx.defines.visit())
     override fun visitFuncDefine(ctx: FuncDefineContext) = FuncDefine(
@@ -73,10 +83,9 @@ object Visitor : GrammarBaseVisitor<Element>() {
         ctx.BOOL_LITERAL() != null -> Literal(ctx.text.toBoolean())
         ctx.CHAR_LITERAL() != null -> Literal(ctx.text[1])
         ctx.STR_LITERAL() != null -> Literal(ctx.text.drop(1).dropLast(1))
-        else -> error("invalid literal ${ctx.text}")
+        else -> errorc("invalid literal ${ctx.text}")
     }
 
-    override fun visitParenExpr(ctx: ParenExprContext) = ctx.expr().visit<Expr>()
     override fun visitVarExpr(ctx: VarExprContext) = Var(ctx.text)
     override fun visitCastExpr(ctx: CastExprContext) = Cast(ctx.type.toType(), ctx.expr().visit())
 

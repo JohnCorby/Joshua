@@ -23,19 +23,19 @@ fun BinaryOp.check(left: Type, right: Type) {
     checkTypesSame("left", left, "right", right)
 
     when {
-        takesNums() -> check(left.isNum() && right.isNum())
+        takesNums() -> checkc(left.isNum() && right.isNum())
         { "op '$this' only works for numbers (got $left and $right)" }
 
-        takesNumsOrBools() -> check(left.isNumOrBool() && right.isNumOrBool())
+        takesNumsOrBools() -> checkc(left.isNumOrBool() && right.isNumOrBool())
         { "op '$this' only works for numbers and bools (got $left and $right)" }
     }
 }
 
 fun UnaryOp.check(type: Type) = when (this) {
-    NEGATE -> check(type.isNum())
+    NEGATE -> checkc(type.isNum())
     { "op '$this' only works for numbers (got $type)" }
 
-    NOT -> check(type.isBool())
+    NOT -> checkc(type.isBool())
     { "op '$this' only works for bools (got $type)" }
 }
 
@@ -64,10 +64,10 @@ interface TypeChecked : Element {
 }
 
 inline fun checkTypesSame(firstName: String, first: Type, secondName: String, second: Type) =
-    check(first == second) { "$firstName type $first doesnt match $secondName type $second" }
+    checkc(first == second) { "$firstName type $first doesnt match $secondName type $second" }
 
 inline fun checkTypesSame(firstName: String, first: List<Type>, secondName: String, second: List<Type>) =
     (first zip second).forEach { checkTypesSame(firstName, it.first, secondName, it.second) }
 
 inline fun checkTypeIs(name: String, type: Type, required: Type) =
-    check(type == required) { "$name type must be $required, not $type" }
+    checkc(type == required) { "$name type must be $required, not $type" }

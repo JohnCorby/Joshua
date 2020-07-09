@@ -1,9 +1,6 @@
 package com.johncorby.joshua.element
 
-import com.johncorby.joshua.Type
-import com.johncorby.joshua.TypeChecked
-import com.johncorby.joshua.Typed
-import com.johncorby.joshua.checkTypesSame
+import com.johncorby.joshua.*
 
 /**
  * a top-level element
@@ -34,7 +31,7 @@ data class FuncDefine(
         current = this
 
         // todo remove this later when we implement this
-        check(args.all { it.init == null }) { "func args cant be initialized" }
+        checkc(args.all { it.init == null }) { "func args cant be initialized" }
 
         Scope.add(this)
 
@@ -59,7 +56,7 @@ data class VarDefine(override val type: Type, override val name: String, val ini
     }
 
     override fun preEval() {
-        check(type != Type.VOID) { "vars cant be void type" }
+        checkc(type != Type.VOID) { "vars cant be void type" }
 
         Scope.add(this)
     }
@@ -85,7 +82,7 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
             when (it) {
                 is VarDefine -> vars += it.apply {
                     // todo remove this later when we implement this
-                    check(init == null) { "struct members cant be initialized" }
+                    checkc(init == null) { "struct members cant be initialized" }
                 }
                 is FuncDefine -> funcs += it.copy(
                     type = it.type,
@@ -93,7 +90,7 @@ data class StructDefine(override val name: String, val defines: List<Define>) : 
                     args = listOf(VarDefine(Type.ADDR, "this")) + it.args,
                     block = it.block
                 )
-                else -> error("structs can only contain vars and funcs")
+                else -> errorc("structs can only contain vars and funcs")
             }
         }
 

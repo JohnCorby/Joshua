@@ -11,8 +11,8 @@
 package com.johncorby.joshua
 
 fun main(args: Array<String>) {
-    check(System.getProperty("os.name").contains("windows", true)) { "must be on windows ('windows' in os.name)" }
-    check(System.getProperty("os.arch").contains("64", true)) { "must be on 64 bit machine ('64' in os.arch)" }
+    checkc(System.getProperty("os.name").contains("windows", true)) { "must be on windows ('windows' in os.name)" }
+    checkc(System.getProperty("os.arch").contains("64", true)) { "must be on 64 bit machine ('64' in os.arch)" }
 
-    Compiler.go(args.getOrElse(0) { error("1 argument must be provided") })
+    Compiler.go(args.getOrElse(0) { errorc("1 argument must be provided") })
 }

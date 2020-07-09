@@ -32,7 +32,7 @@ data class Literal<T : Any>(val value: T) : ExprImpl() {
             is Boolean -> Type.BOOL
             is Char -> Type.CHAR
             is String -> Type.STRING
-            else -> error("no type for value of class ${value.className}")
+            else -> errorc("no type for value of class ${value.className}")
         }
     }
 
