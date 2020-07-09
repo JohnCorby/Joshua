@@ -17,8 +17,9 @@ private inline fun Type.isNum() = equals(BYTE, UBYTE, SHORT, USHORT, INT, UINT, 
 private inline fun Type.isBool() = this == BOOL
 private inline fun Type.isNumOrBool() = isNum() || isBool()
 
-private inline fun BinaryOp.takesNumsOrBools() = equals(EQ, NEQ)
 private inline fun BinaryOp.takesNums() = equals(MUL, DIV, MOD, ADD, SUB, LT, LTE, GT, GTE)
+private inline fun BinaryOp.takesNumsOrBools() = equals(EQ, NEQ)
+inline fun BinaryOp.isConditional() = equals(LT, LTE, GT, GTE, EQ, NEQ)
 fun BinaryOp.check(left: Type, right: Type) {
     checkTypesSame("left", left, "right", right)
 

@@ -63,7 +63,9 @@ data class Binary(val left: Expr, val right: Expr, val operator: BinaryOp) : Exp
         val rightEval = right.eval()
 
         checkTypes()
-        type = left.type
+        type =
+            if (operator.isConditional()) Type.BOOL
+            else left.type
 
         return type.cast(
             leftEval,

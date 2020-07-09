@@ -44,6 +44,8 @@ data class FuncDefine(
 
     override fun postEval() {
         current = null
+
+        super<Scoped>.postEval()
     }
 }
 

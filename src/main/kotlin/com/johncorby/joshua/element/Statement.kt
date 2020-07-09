@@ -52,13 +52,13 @@ abstract class LoopStatement : ConditionalStatement() {
     }
 
     override fun preEval() {
-        super.preEval()
         inLoop = true
+        super.preEval()
     }
 
     override fun postEval() {
-        super.postEval()
         inLoop = false
+        super.postEval()
     }
 }
 
@@ -75,7 +75,7 @@ data class Until(override val condition: Expr, val block: Block) : LoopStatement
 data class For(val init: VarDefine, override val condition: Expr, val update: Statement, val block: Block) :
     LoopStatement() {
     override fun evalImpl() =
-        "for(${init.evalThenCheckTypes()};${condition.eval()};${update.eval()})${block.blockEval()}"
+        "for(${init.eval()};${condition.evalThenCheckTypes()};${update.eval()})${block.blockEval()}"
 }
 
 
@@ -89,11 +89,11 @@ data class Ret(val value: Expr? = null) : ElementImpl(), Statement, TypeChecked 
 }
 
 class Break : ElementImpl(), Statement {
-    override fun preEval() = check(LoopStatement.inLoop) { "cant break when not in loop" }
+    override fun preEval() = checkc(LoopStatement.inLoop) { "cant break when not in loop" }
     override fun evalImpl() = "break"
 }
 
 class Continue : ElementImpl(), Statement {
-    override fun preEval() = check(LoopStatement.inLoop) { "cant continue when not in loop" }
+    override fun preEval() = checkc(LoopStatement.inLoop) { "cant continue when not in loop" }
     override fun evalImpl() = "continue"
 }
