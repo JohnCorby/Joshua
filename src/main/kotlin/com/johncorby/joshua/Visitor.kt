@@ -70,8 +70,8 @@ object Visitor : GrammarBaseVisitor<Element>() {
     )
 
     override fun visitRet(ctx: RetContext) = Ret(ctx.value?.visit())
-    override fun visitBrk(ctx: BrkContext) = TODO()
-    override fun visitCont(ctx: ContContext) = TODO()
+    override fun visitBrk(ctx: BrkContext) = Break()
+    override fun visitCont(ctx: ContContext) = Continue()
 
     @Suppress("PlatformExtensionReceiverOfInline")
     override fun visitLitExpr(ctx: LitExprContext) = when {
